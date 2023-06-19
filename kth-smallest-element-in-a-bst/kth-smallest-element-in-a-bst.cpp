@@ -11,16 +11,27 @@
  */
 class Solution {
 public:
-    void getInorder(TreeNode* root , vector<int>&inOrder)
-    {
-         if(root==NULL)return ;
-         getInorder(root->left,inOrder);
-         inOrder.push_back(root->val);
-         getInorder(root->right,inOrder);
-    }
     int kthSmallest(TreeNode* root, int k) {
-        vector<int>inorder;
-        getInorder(root,inorder);
-        return inorder[k-1];
+        stack<TreeNode*> st;
+        TreeNode* curr = root;
+        int count = 0;
+        
+        while (curr != nullptr || !st.empty()) {
+            while (curr != nullptr) {
+                st.push(curr);
+                curr = curr->left;
+            }
+            
+            curr = st.top();
+            st.pop();
+            count++;
+            
+            if (count == k)
+                return curr->val;
+            
+            curr = curr->right;
+        }
+        
+        return -1;  // kth smallest element does not exist
     }
 };
