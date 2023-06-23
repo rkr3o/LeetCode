@@ -1,41 +1,30 @@
 class Solution {
 public:
-    int getSize(ListNode* head)
-    {
-        int cnt = 0;
-        ListNode* temp = head;
-        while(temp != NULL)
-        {
-            cnt++;
-            temp = temp->next;
-        }
-        return cnt;
-    }
-    
     ListNode* removeNthFromEnd(ListNode* head, int n) {
-        int size = getSize(head);
+        ListNode* dummy = new ListNode(0); // for handling the case of deletion of node head
+        dummy->next = head;
+        ListNode* fast = dummy;
+        ListNode* slow = dummy;
         
-        // Handle case when the node to be removed is the head node
-        if (n == size) {
-            ListNode* newHead = head->next;
-            delete head;
-            return newHead;
+        // Move the fast pointer n nodes ahead
+        for (int i = 0; i <= n; i++) {
+            fast = fast->next;
         }
         
-        ListNode* temp = head;
-        int req = size - n - 1;
-        int cnt = 0;
-        
-        while (cnt < req )
-        {
-            cnt++;
-            temp = temp->next;
+        // Move both pointers until the fast pointer reaches the end
+        while (fast != nullptr) {
+            fast = fast->next;
+            slow = slow->next;
         }
         
-        ListNode* deleteNode = temp->next;
-        temp->next = deleteNode->next;
-        delete deleteNode;
+        // Remove the node pointed by the slow pointer
+        ListNode* toDelete = slow->next;
+        slow->next = slow->next->next;
+        delete toDelete;
         
-        return head;
+        ListNode* result = dummy->next;
+        delete dummy;
+        
+        return result;
     }
 };
