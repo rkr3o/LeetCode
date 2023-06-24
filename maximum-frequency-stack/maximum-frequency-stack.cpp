@@ -1,24 +1,19 @@
-class FreqStack {
-private:
-    map<int, int, greater<int>> freqMap;
-    map<int, stack<int>, greater<int>> freqStackMap;
-    
+class FreqStack 
+{
+    priority_queue<pair<int, pair<int, int>>> q;
+    unordered_map<int, int> freq;
+    int pos = 0;
 public:
-    FreqStack() {}
-    void push(int val) {
-        int freq = ++freqMap[val];
-        freqStackMap[freq].push(val);
+    void push(int x) 
+    {
+        q.emplace(++freq[x], make_pair(++pos, x));
     }
-    int pop() {
-        auto maxFreqIt = freqStackMap.begin();
-        int val = maxFreqIt->second.top();
-        maxFreqIt->second.pop();
-        
-        if (maxFreqIt->second.empty()) {
-            freqStackMap.erase(maxFreqIt);
-        }
-        
-        freqMap[val]--;
-        return val;
+    int pop() 
+    {
+        auto val = q.top();
+        q.pop();
+        int x = val.second.second;
+        freq[x]--;
+        return x;
     }
 };
