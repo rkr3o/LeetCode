@@ -24,11 +24,12 @@ public:
             prev->next = cur->next;
             cur->next= cur->next->next;
             prev->next->next = cur;
-            
-
+        
             prev = cur ;
             cur = cur->next;
         }
-        return dummy->next;
+        ListNode* newHead = dummy->next;
+        delete dummy;
+        return newHead;
     }
 };
