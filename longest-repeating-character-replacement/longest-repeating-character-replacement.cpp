@@ -9,7 +9,7 @@ public:
         for (int right = 0; right < s.length(); right++) {
             mp[s[right]]++;
             maxCount = max(maxCount, mp[s[right]]);
-            if (right - left + 1 - maxCount > k) {
+            while (right - left + 1 - maxCount > k) {
                 mp[s[left]]--;
                 left++;
             }
