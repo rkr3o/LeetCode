@@ -1,36 +1,27 @@
 class Solution {
 public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-        priority_queue<int>maxima;
-        priority_queue<int,vector<int>,greater<int>>minima;
-        vector<int>v1;
-        for(auto x:nums1)v1.push_back(x);
-        for(auto x:nums2)v1.push_back(x);
-        for(auto num: v1)
-        {
-               if(maxima.empty() || num<=maxima.top())
-                {
-                    maxima.push(num);
-                }
-                else
-                {
-                    minima.push(num);
-                }
+        int n = nums1.size();
+        int m = nums2.size();
         
-                // Balance the heaps
-                if (maxima.size() > minima.size() + 1) {
-                    minima.push(maxima.top());
-                    maxima.pop();
-                } else if (minima.size() > maxima.size()) {
-                    maxima.push(minima.top());
-                    minima.pop();
-                }
+        nums1.push_back(INT_MAX);
+        nums2.push_back(INT_MAX);
+        
+        vector<int> merged(n + m);
+        int i = 0, j = 0, k = 0;
+        
+        while (k < n + m) {
+            if (nums1[i] <= nums2[j]) {
+                merged[k++] = nums1[i++];
+            } else {
+                merged[k++] = nums2[j++];
+            }
         }
-
-        if(maxima.size()>minima.size())
-        {
-            return maxima.top();
+        
+        if ((n + m) % 2 == 1) {
+            return merged[(n + m) / 2];
+        } else {
+            return (double)(merged[(n + m) / 2 - 1] + merged[(n + m) / 2]) / 2;
         }
-        return (maxima.top()+minima.top())/2.0;
     }
 };
