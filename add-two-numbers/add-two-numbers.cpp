@@ -11,8 +11,7 @@
 class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        vector<int>a;
-        vector<int>b;
+        vector<int>a,b;
         ListNode* temp = l1;
         ListNode* temp2 = l2;
         while(temp!=NULL)
@@ -25,10 +24,8 @@ public:
             b.push_back(temp2->val);
             temp2=temp2->next;
         }
-
         vector<int>ans;
-        int n = a.size(), m = b.size();
-        int i = 0 , j = 0 , carry = 0 ;
+        int n = a.size(), m = b.size(),i = 0 , j = 0 , carry = 0 ;
         while(i < a.size()  and j < b.size())
         {
             int sum = carry ;
@@ -38,6 +35,7 @@ public:
             sum = sum%10;
             ans.push_back(sum);
         }
+        //remaining element of array1
         while(i<n)
         {
             int sum = carry ;
@@ -46,6 +44,7 @@ public:
             sum = sum%10;
             ans.push_back(sum);
         }
+        //remaining element of array2
         while(j<m)
         {
             int sum = carry ;
@@ -65,6 +64,5 @@ public:
         ListNode* resultHead = newHead->next;
         delete newHead;
         return resultHead;
-
     }
 };
