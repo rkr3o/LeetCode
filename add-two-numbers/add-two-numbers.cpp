@@ -11,40 +11,40 @@
 class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        vector<int>a,b;
-        ListNode* temp = l1;
-        ListNode* temp2 = l2;
-        while(temp!=NULL)
+        if(l1==NULL and l2==NULL)return NULL;
+        if(l1==NULL and l2!=NULL)return l2;
+        if(l1!=NULL and l2==NULL)return l1;
+        
+        ListNode* tail = NULL;
+        ListNode* head = NULL;
+        int carry = 0;
+        while(l1!=NULL ||  l2!=NULL || carry)
         {
-            a.push_back(temp->val);
-            temp=temp->next;
-        }
-        while(temp2!=NULL)
-        {
-            b.push_back(temp2->val);
-            temp2=temp2->next;
-        }
-        vector<int>ans;
-        int n = a.size(), m = b.size(),i = 0 , j = 0 , carry = 0 ;
-        while(i < a.size()  || j < b.size())
-        {
-            int sum = carry ;
-            if(i<n)sum+=a[i++];
-            if(j<m)sum+=b[j++];
+            int sum = carry;
+            if(l1)
+            {
+                sum+=l1->val;
+                l1 = l1->next;
+            }
+            if(l2)
+            {
+                sum+=l2->val;
+                l2 = l2->next;
+            }
             carry = sum/10;
             sum = sum%10;
-            ans.push_back(sum);
+
+            ListNode* newNode = new ListNode(sum);
+            if(!head)
+            {
+                head = tail = newNode;
+            }
+            else
+            {
+                tail->next = newNode;
+                tail=tail->next;
+            }
         }
-        if(carry)ans.push_back(carry);
-        ListNode* newHead = new ListNode(0);
-        ListNode* cur = newHead;
-        for(int i = 0 ; i < ans.size() ; i++)
-        {
-            cur->next = new ListNode(ans[i]);
-            cur = cur->next;
-        }
-        ListNode* resultHead = newHead->next;
-        delete newHead;
-        return resultHead;
+        return head;
     }
 };
