@@ -26,28 +26,10 @@ public:
         }
         vector<int>ans;
         int n = a.size(), m = b.size(),i = 0 , j = 0 , carry = 0 ;
-        while(i < a.size()  and j < b.size())
+        while(i < a.size()  || j < b.size())
         {
             int sum = carry ;
             if(i<n)sum+=a[i++];
-            if(j<m)sum+=b[j++];
-            carry = sum/10;
-            sum = sum%10;
-            ans.push_back(sum);
-        }
-        //remaining element of array1
-        while(i<n)
-        {
-            int sum = carry ;
-            if(i<n)sum+=a[i++];
-            carry = sum/10;
-            sum = sum%10;
-            ans.push_back(sum);
-        }
-        //remaining element of array2
-        while(j<m)
-        {
-            int sum = carry ;
             if(j<m)sum+=b[j++];
             carry = sum/10;
             sum = sum%10;
