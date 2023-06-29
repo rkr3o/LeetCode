@@ -7,24 +7,26 @@ public:
         int maxima = 0;
         int n = matrix.size();
         int m = matrix[0].size();
-        vector<vector<int>> dp(n, vector<int>(m, 0));
+        vector<int> prevRow(m, 0);  // Previous row
+        vector<int> currRow(m, 0);  // Current row
         
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 if (i == 0 || j == 0) {
-                    dp[i][j] = matrix[i][j] - '0';
+                    currRow[j] = matrix[i][j] - '0';
                 } else {
                     if (matrix[i][j] == '1') {
-                        int up = dp[i-1][j];
-                        int left = dp[i][j-1];
-                        int diagonal = dp[i-1][j-1];
-                        dp[i][j] = 1 + min({up, left, diagonal});
+                        int up = prevRow[j];
+                        int left = currRow[j-1];
+                        int diagonal = prevRow[j-1];
+                        currRow[j] = 1 + min({up, left, diagonal});
                     } else {
-                        dp[i][j] = 0;
+                        currRow[j] = 0;
                     }
                 }
-                maxima = max(maxima, dp[i][j]);
+                maxima = max(maxima, currRow[j]);
             }
+           prevRow=currRow;  // Update the previous row
         }
         
         return maxima * maxima;
