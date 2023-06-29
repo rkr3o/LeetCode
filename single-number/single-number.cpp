@@ -3,7 +3,10 @@ public:
     int singleNumber(vector<int>& nums) 
     {
        int xi = 0;
-       for(auto x : nums)xi = xi^x;
+       for(int i = 0 ; i < nums.size() ; i++)
+       {
+           xi = xi^nums[i];
+       } 
        return xi;
     }
 };
