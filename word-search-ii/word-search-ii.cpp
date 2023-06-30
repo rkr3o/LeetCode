@@ -1,85 +1,145 @@
-class TrieNode {
-public:
-    vector<TrieNode*> children;
-    string word;
+struct Node
+{
+    Node *links[26];
+    bool flag = false;
+    string str;
+    bool containKey(char ch)
+    {
+        return (links[ch - 'a'] != NULL);
+    }
 
-    TrieNode() : children(26), word("") {}
-};
+    void put(char ch, Node *node)
+    {
+        links[ch - 'a'] = node;
+    }
 
-class Trie {
-public:
-    TrieNode* root;
+    Node* get(char ch)
+    {
+        return links[ch - 'a'];
+    }
 
-    Trie() : root(new TrieNode()) {}
+    void setEnd()
+    {
+        flag = true;
+    }
 
-    void insert(string word) {
-        TrieNode* node = root;
-        for (char c : word) {
-            int idx = c - 'a';
-            if (!node->children[idx]) {
-                node->children[idx] = new TrieNode();
-            }
-            node = node->children[idx];
-        }
-        node->word = word;
+    bool isEnd()
+    {
+        return flag;
     }
 };
 
-class Solution {
-public:
-    vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
-        int n = board.size();
-        int m = board[0].size();
+class Trie
+{
+    public:
+        Node * root;
 
-        Trie trie;
-        for (string word : words) {
-            trie.insert(word);
-        }
-
-        vector<string> result;
-        vector<vector<bool>> visited(n, vector<bool>(m, false));
-
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                backtrack(board, visited, trie.root, i, j, result);
-            }
-        }
-
-        return result;
+    Trie()
+    {
+        root = new Node();
     }
 
-private:
-    void backtrack(vector<vector<char>>& board, vector<vector<bool>>& visited, TrieNode* node, int row, int col, vector<string>& result) {
-        char c = board[row][col];
-        int idx = c - 'a';
-
-        if (!node->children[idx]) {
-            return;
-        }
-
-        node = node->children[idx];
-
-        if (!node->word.empty()) {
-            result.push_back(node->word);
-            node->word = "";  // Mark word as found (avoid duplicates)
-        }
-
-        visited[row][col] = true;
-
-        int n = board.size();
-        int m = board[0].size();
-        int dr[] = {-1, 0, 1, 0};
-        int dc[] = {0, 1, 0, -1};
-
-        for (int i = 0; i < 4; i++) {
-            int newRow = row + dr[i];
-            int newCol = col + dc[i];
-
-            if (newRow >= 0 && newRow < n && newCol >= 0 && newCol < m && !visited[newRow][newCol]) {
-                backtrack(board, visited, node, newRow, newCol, result);
+    void insert(string word)
+    {
+        Node *node = root;
+        for (int i = 0; i < word.size(); i++)
+        {
+            if (!node->containKey(word[i]))
+            {
+                node->put(word[i], new Node());
             }
+
+            node = node->get(word[i]);
         }
 
-        visited[row][col] = false;
+        node->setEnd();
+        node->str = word;
     }
+
+    bool search(string word)
+    {
+        Node *node = root;
+        for (int i = 0; i < word.size(); i++)
+        {
+            if (!node->containKey(word[i]))
+            {
+                return false;
+            }
+
+            node = node->get(word[i]);
+        }
+        return node->isEnd();
+    }
+
+    bool startWith(string prefix)
+    {
+        Node *node = root;
+        for (int i = 0; i < prefix.size(); i++)
+        {
+            if (!node->containKey(prefix[i]))
+            {
+                return false;
+            }
+
+            node = node->get(prefix[i]);
+        }
+        return true;
+    }
+};
+
+class Solution
+{
+    public:
+        vector<string> findWords(vector<vector < char>> &board, vector< string > &words)
+        {
+            int n = board.size();
+            int m = board[0].size();
+
+            Trie trie;
+            for (string word: words)
+            {
+                trie.insert(word);
+            }
+
+            set<string> res;
+            vector<vector < bool>> vis(n, vector<bool> (m, false));
+
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    dfs(board, i, j, trie.root, res, vis);
+                }
+            }
+
+            vector<string> ans(res.begin(), res.end());
+            return ans;
+        }
+
+    private:
+        void dfs(vector<vector < char>> &board, int i, int j, Node *node, set< string > &res, vector< vector< bool>> &vis)
+        {
+            node = node->get(board[i][j]);
+            if (vis[i][j] || !node)
+            {
+                return;
+            }
+            if (node->isEnd())
+            {
+                res.insert(node->str);
+            }
+            vis[i][j] = true;
+
+           	// Array values of direction (dx, dy)
+            int drow[]={-1,0,+1,0};
+            int dcol[]={0,+1,0,-1};
+            for (int k = 0; k < 4; k++)
+            {
+                int nrow = i + drow[k];
+                int ncol = j + dcol[k];
+                if(nrow>=0 and ncol>=0 and nrow<board.size() and ncol<board[0].size()and !vis[nrow][ncol])
+                    dfs(board, nrow, ncol, node, res, vis);
+            }
+            vis[i][j] = false;
+        }
 };
