@@ -2,18 +2,23 @@ struct Node {
     Node* links[26];
     bool flag = false;
     string str;
+
     bool containKey(char ch) {
         return (links[ch - 'a'] != NULL);
     }
+
     void put(char ch, Node* node) {
         links[ch - 'a'] = node;
     }
+
     Node* get(char ch) {
         return links[ch - 'a'];
     }
+
     void setEnd() {
         flag = true;
     }
+
     bool isEnd() {
         return flag;
     }
@@ -22,9 +27,11 @@ struct Node {
 class Trie {
 public:
     Node* root;
+
     Trie() {
         root = new Node();
     }
+
     void insert(string word) {
         Node* node = root;
         for (int i = 0; i < word.size(); i++) {
@@ -33,12 +40,35 @@ public:
             }
             node = node->get(word[i]);
         }
+
         node->setEnd();
         node->str = word;
     }
+
+    bool search(string word) {
+        Node* node = root;
+        for (int i = 0; i < word.size(); i++) {
+            if (!node->containKey(word[i])) {
+                return false;
+            }
+            node = node->get(word[i]);
+        }
+        return node->isEnd();
+    }
+
+    bool startWith(string prefix) {
+        Node* node = root;
+        for (int i = 0; i < prefix.size(); i++) {
+            if (!node->containKey(prefix[i])) {
+                return false;
+            }
+            node = node->get(prefix[i]);
+        }
+        return true;
+    }
 };
-void dfs(vector<vector<char>>& board, int i, int j, Node* node, set<string>& res, vector<vector<bool>>& vis) 
-{
+
+void dfs(vector<vector<char>>& board, int i, int j, Node* node, set<string>& res, vector<vector<bool>>& vis) {
     node = node->get(board[i][j]);
     if (vis[i][j] || !node) {
         return;
@@ -47,6 +77,7 @@ void dfs(vector<vector<char>>& board, int i, int j, Node* node, set<string>& res
         res.insert(node->str);
     }
     vis[i][j] = true;
+
     // Array values of direction (dx, dy)
     int drow[] = {-1, 0, +1, 0};
     int dcol[] = {0, +1, 0, -1};
@@ -59,8 +90,8 @@ void dfs(vector<vector<char>>& board, int i, int j, Node* node, set<string>& res
     }
     vis[i][j] = false;
 }
-class Solution 
-{
+
+class Solution {
 public:
     vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
         int n = board.size();
