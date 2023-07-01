@@ -7,7 +7,10 @@
              if (s[idx] == '0')return 0;	
              if(dp[idx]!=-1)return dp[idx];
              int cnt = 0;	 
-             cnt += solve(s, idx + 1,dp);	 
+             if(s[idx]!='0')
+             {
+                 cnt += solve(s, idx + 1,dp);	
+             } 
              if (idx + 1 < s.size())
              {
                  int twoDigits = (s[idx] - '0') *10 + (s[idx + 1] - '0');
