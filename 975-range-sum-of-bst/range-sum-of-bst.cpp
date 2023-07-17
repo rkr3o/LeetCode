@@ -1,35 +1,21 @@
 class Solution {
 public:
-    void getInorder(TreeNode* root, vector<int>& in) {
-        if (root == NULL)
-            return;
-
-        getInorder(root->left, in);
-        in.push_back(root->val);
-        getInorder(root->right, in);
-    }
-
-    int rangeSumBST(TreeNode* root, int low, int high) {
-        vector<int> in;
-        getInorder(root, in);
-        if (root == NULL)
-            return 0;
-
-        int count = 0;
-        int n = in.size();
-        int sum = 0;
-
-        // Adjust low and high if they are out of range
-        if (low < in[0])
-            low = in[0];
-        if (high > in[n - 1])
-            high = in[n - 1];
-
-        for (int i = 0; i < n; i++) {
-            if (in[i] >= low && in[i] <= high)
-                sum += in[i];
+   int countBST(TreeNode* root, int l , int h)
+    {
+        if(root==NULL)return 0 ;
+        int sum = 0 ;
+        if(root->val>=l and root->val<=h)
+        {
+            return root->val+countBST(root->left,l,h)+countBST(root->right,l,h);
         }
-
-        return sum;
+        else if (root->val < l)
+            return countBST(root->right, l, h);
+        // If the current node's value is greater than the range, recursively search the left subtree
+        else
+            return countBST(root->left, l, h);
+    }
+    int rangeSumBST(TreeNode* root, int l, int h) {
+        if(root==NULL)return 0;
+        return countBST(root,l,h);
     }
 };
