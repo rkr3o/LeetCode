@@ -6,18 +6,16 @@ public:
         int right = mid+1;
         vector<pair<int,int>>temp;
         int cnt = 0;
-        int k = 0 ;
         while(left<=mid and right<=high)
         {
-            if(v[left].first <= v[right].first)
+            if(v[left].first > v[right].first)
             { 
-                count[v[left].second] += cnt;
+                count[v[left].second] += high - right + 1;
                 temp.push_back({v[left].first,v[left].second});
                 left++;
             }
             else
             {
-                cnt++;
                 temp.push_back({v[right].first,v[right].second});
                 right++;
             }
@@ -31,7 +29,7 @@ public:
         while(right<=high)
         {
            temp.push_back({v[right].first,v[right].second});
-                right++;
+             right++;
         }
 
         for(int i = low ; i <= high ; i++)
