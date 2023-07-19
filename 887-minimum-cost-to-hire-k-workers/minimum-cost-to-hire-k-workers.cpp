@@ -1,27 +1,35 @@
 class Solution {
 public:
-    double mincostToHireWorkers(vector<int>& quality, vector<int>& wage, int K) {
+    double mincostToHireWorkers(vector<int>& quality, vector<int>& wage, int k) {
         int n = quality.size();
         vector<pair<double, int>> workers;
-        for(int i = 0; i < n; i++)
-            workers.push_back({(double)wage[i] / quality[i], quality[i]});
+
+        for (int i = 0; i < n; ++i) {
+            double ratio = (double)(wage[i]) / quality[i];
+            workers.emplace_back(ratio, quality[i]);
+        }
+
         sort(workers.begin(), workers.end());
-        double sum = 0, ans;
-        priority_queue<int> minQualities;
-        for(int i = 0; i < K; i++) {
-            sum += workers[i].second;
-            minQualities.push(workers[i].second);
-        }
-        ans = sum * workers[K - 1].first;
-        for(int i = K; i < n; i++) {
-            int maxQuality = minQualities.top();
-            if(maxQuality > workers[i].second) {
-                minQualities.pop();
-                minQualities.push(workers[i].second);
-                sum += workers[i].second - maxQuality;
+
+        double minCost = DBL_MAX;
+        int qualitySum = 0;
+        priority_queue<int> pq;
+
+        for (const auto& worker : workers) {
+            qualitySum += worker.second;
+            pq.push(worker.second);
+
+            if (pq.size() > k) {
+                qualitySum -= pq.top();
+                pq.pop();
             }
-            ans = min(ans, sum * workers[i].first);
+
+            if (pq.size() == k) {
+                double cost = qualitySum * worker.first;
+                minCost = min(minCost, cost);
+            }
         }
-        return ans;
+
+        return minCost;
     }
 };
