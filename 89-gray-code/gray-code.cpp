@@ -23,17 +23,13 @@ public:
     }
 
     vector<int> grayCode(int n) {
-        vector<string> binaryStrings = solve(n);
-        vector<int> grayCodes;
-        
-        for (const string& binaryStr : binaryStrings) {
-            int grayCode = 0;
-            for (char c : binaryStr) {
-                grayCode = (grayCode << 1) + (c - '0');
+        vector<int>res(1,0);
+        for(int i=0;i<n;i++){
+            int size=res.size();
+            for(int j=size-1;j>=0;j--){
+                res.push_back(res[j]|1<<i);
             }
-            grayCodes.push_back(grayCode);
         }
-
-        return grayCodes;
+        return res;
     }
 };
