@@ -24,9 +24,6 @@ struct Node {
 };
 
 class Trie {
-private:
-   
-
 public: 
     Node* root;
     Trie() {
@@ -60,29 +57,16 @@ class Solution {
 public:
     bool wordBreak(string s, vector<string>& wordDict) {
         Trie trie;
-        for (string& word : wordDict) {
+        for(string word : wordDict)
             trie.insert(word);
-        }
-
-        int n = s.length();
-        vector<bool> dp(n + 1, false);
-        dp[n] = true;
-
-        for (int i = n - 1; i >= 0; i--) {
-            Node* cur = trie.root; // Use Node* instead of TrieNode*
-            for (int j = i + 1; j <= n; j++) {
-                char c = s[j - 1]; // Use A[j-1] instead of s[j-1]
-                if (!cur->containKey(c)) { // Use containKey instead of search
-                    break; // A[i:j] does not exist in our trie
-                }
-                cur = cur->get(c);
-                if (cur->isEnd() && dp[j]) {
-                    dp[i] = true;
-                    break;
-                }
+        vector<bool> dp(s.size()+1, false);
+        dp[0]=true;
+        for(int len=1; len<=s.size(); len++){
+            for(int i=0; i<len; i++){
+                if(dp[i] && trie.search(s.substr(i, len-i)))
+                    dp[len]=true;
             }
         }
-
-        return dp[0];
+        return dp[s.size()];
     }
 };
