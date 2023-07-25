@@ -55,18 +55,24 @@ public:
 
 class Solution {
 public:
+    int dp[300];
+    bool solve(int ind , string &s , Trie &trie)
+    {
+         if(ind==s.size())return true;
+         string st;
+         if(dp[ind]!=-1)return dp[ind];
+         for(int i = ind ; i < s.size() ; i++)
+         {
+             st+=s[i];
+             if(trie.search(st) and solve(i+1,s,trie)==true)return dp[ind]= true;
+         }
+         return dp[ind] = false;
+    }
     bool wordBreak(string s, vector<string>& wordDict) {
         Trie trie;
+        memset(dp,-1,sizeof(dp));
         for(string word : wordDict)
             trie.insert(word);
-        vector<bool> dp(s.size()+1, false);
-        dp[0]=true;
-        for(int len=1; len<=s.size(); len++){
-            for(int i=0; i<len; i++){
-                if(dp[i] && trie.search(s.substr(i, len-i)))
-                    dp[len]=true;
-            }
-        }
-        return dp[s.size()];
+         return solve(0,s,trie);
     }
 };
