@@ -1,23 +1,26 @@
 class Solution {
 public:
     int minAddToMakeValid(string s) {
-        int count = 0;
+        int cnt = 0;
         stack<char>st;
-        for (char c : s) {
-            if (c == '(') {
-                st.push(c);
-            } else {
-                if (st.empty()) {
-                    count++; // Count unmatched closing parenthesis
-                } else {
-                    st.pop(); // Match with a corresponding opening parenthesis
+        for(auto x : s)
+        {
+            if(x=='(')
+            {
+                st.push(x);
+            }
+            else 
+            {
+                if(st.empty())
+                {
+                    cnt++;
+                }
+                else
+                {
+                    st.pop();
                 }
             }
         }
-        
-        // Count unmatched opening parenthesis
-        count += st.size();
-        
-        return count;
+        return cnt+=st.size();
     }
 };
