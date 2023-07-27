@@ -40,3 +40,6 @@ public:
         return -1;
     }
 };
+//time complexity: O(n^2*logn)
+// pq contains at most n^2 elements, pop time complexity each time is is O(logn^2) = O(2*logn)
+// At most we will pop n^2 times
