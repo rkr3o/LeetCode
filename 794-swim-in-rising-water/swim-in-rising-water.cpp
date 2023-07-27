@@ -1,5 +1,3 @@
-class Solution {
-public:
  
 class DSU {
 public:
@@ -50,7 +48,8 @@ public:
         }
     }
 };
-
+class Solution {
+public:
 int swimInWater(vector<vector<int>>& grid) {
     int n = grid.size();
     vector<pair<int, int>> positions;
