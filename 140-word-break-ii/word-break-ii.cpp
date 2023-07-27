@@ -1,12 +1,5 @@
 class Solution {
 public:
-    vector<string> wordBreak(string s, vector<string>& wordDict) {
-        unordered_set<string> st(wordDict.begin(), wordDict.end());
-        vector<string> ans;
-        solve(0, s, "", st, ans);
-        return ans;
-    }
-
     void solve(int ind, string& s, string req, unordered_set<string>& st, vector<string>& ans) {
         if (ind == s.size()) {
             ans.push_back(req);
@@ -24,4 +17,11 @@ public:
             }
         }
     }
+    vector<string> wordBreak(string s, vector<string>& wordDict) {
+        unordered_set<string> st(wordDict.begin(), wordDict.end());
+        vector<string> ans;
+        solve(0, s, "", st, ans);
+        return ans;
+    }
+
 };
