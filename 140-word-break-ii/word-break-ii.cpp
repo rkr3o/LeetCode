@@ -12,9 +12,9 @@ public:
             ans.push_back(req);
             return;
         }
-
+        string cur ;
         for (int i = ind; i < s.size(); i++) {
-            string cur = s.substr(ind, i - ind + 1);
+            cur+=s[i];
             if (st.find(cur) != st.end()) {
                 if (req.empty()) {
                     solve(i + 1, s, cur, st, ans);
