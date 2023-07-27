@@ -1,96 +1,38 @@
- 
-class DSU {
-public:
-    vector<int> parent, size, rank;
-    
-    DSU(int n) {
-        parent.resize(n + 1);
-        size.resize(n + 1, 1);
-        rank.resize(n + 1, 0);
-        for (int i = 0; i <= n; i++) {
-            parent[i] = i;
-        }
-    }
-
-    int find(int v) {
-        if (v == parent[v]) return v;
-        return parent[v] = find(parent[v]);
-    }
-
-    void UnionBySize(int u, int v) {
-        u = find(u);
-        v = find(v);
-
-        if (u != v) {
-            if (size[u] < size[v]) {
-                swap(u, v);
-            }
-
-            parent[v] = u;
-            size[u] += size[v];
-        }
-    }
-
-    void unionByRank(int u, int v) {
-        u = find(u);
-        v = find(v);
-        
-        if (u != v) {
-            if (rank[u] < rank[v]) {
-                swap(u, v);
-            }
-
-            parent[v] = u;
-
-            if (rank[u] == rank[v]) {
-                rank[u]++;
-            }
-        }
-    }
-};
 class Solution {
 public:
-int swimInWater(vector<vector<int>>& grid) {
-    int n = grid.size();
-    vector<pair<int, int>> positions;
+    int swimInWater(vector<vector<int>>& grid) {
+        int n = grid.size();
+        int res = 0;
+        auto compare = [](const pair<int, pair<int, int>>& a, const pair<int, pair<int, int>>& b) {
+            return a.first > b.first;
+        };
+        priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, decltype(compare)> pq(compare);
+        pq.push({grid[0][0], {0, 0}});
+        vector<vector<int>> seen(n, vector<int>(n, 0));
+        seen[0][0] = 1;
+        static int dir[4][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
 
-    for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < n; ++j) {
-            positions.emplace_back(grid[i][j], i * n + j);
-        }
-    }
+        while (true) {
+            auto p = pq.top();
+            pq.pop();
+            int t = p.first;
+            int x = p.second.first;
+            int y = p.second.second;
 
-    sort(positions.begin(), positions.end());
+            res = max(res, t);
 
-    DSU uf(n * n);
-    int directions[4][2] = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
-    int minTime = 0;
+            if (x == n - 1 && y == n - 1)
+                return res;
 
-    for (const auto& pos : positions) {
-        int height = pos.first;
-        int index = pos.second;
+            for (auto& d : dir) {
+                int i = x + d[0];
+                int j = y + d[1];
 
-        int row = index / n;
-        int col = index % n;
-
-        minTime = max(minTime, height);
-
-        for (const auto& dir : directions) {
-            int newRow = row + dir[0];
-            int newCol = col + dir[1];
-            int newIndex = newRow * n + newCol;
-
-            if (newRow >= 0 && newRow < n && newCol >= 0 && newCol < n && grid[newRow][newCol] <= height) {
-                uf.UnionBySize(index, newIndex);
+                if (i >= 0 && i < n && j >= 0 && j < n && !seen[i][j]) {
+                    seen[i][j] = 1;
+                    pq.push({grid[i][j], {i, j}});
+                }
             }
         }
-
-        if (uf.find(0) == uf.find(n * n - 1)) {
-            return minTime;
-        }
     }
-
-    return -1; // Unable to reach the bottom right square.
-}
-
 };
