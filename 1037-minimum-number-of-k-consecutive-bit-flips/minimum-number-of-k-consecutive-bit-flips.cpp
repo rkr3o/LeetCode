@@ -1,27 +1,27 @@
 class Solution {
 public:
-    int minKBitFlips(vector<int>& nums, int k) {
+    int minKBitFlips(vector<int>& array, int k) {
+        int flipped = 0;
+        int length = array.size();
         int res = 0;
-        int n = nums.size();
-        vector<int> flipped(n, 0);
 
-        int flips = 0;
-
-        for (int i = 0; i < n; i++) {
-            if (i >= k) {
-                flips ^= flipped[i - k];
+        for (int i = 0; i < length; i++) {
+            // Revise flipped which didn't affect the current index
+            if (i >= k && array[i - k] < 0) {
+                flipped ^= 1;
             }
 
-            if ((nums[i] + flips) % 2 == 0) {
-                if (i + k > n) {
-                    return -1;
-                }
-                flipped[i] = 1;
-                flips ^= 1;
+            // Use ^ to know whether array[i] needs to be flipped or not
+            if (!(flipped ^ array[i])) {
+                // If the current index still needs a flip,
+                // and the sliding window will be over the length
+                if (i + k > length) return -1;
+
+                array[i] = -1;
+                flipped ^= 1;
                 res++;
             }
         }
-
         return res;
     }
 };
