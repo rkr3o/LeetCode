@@ -11,22 +11,22 @@
  */
 class Solution {
 public:
-    int solve(TreeNode* root , int rootData)
-    {
-        if(root==NULL)return 0 ;
-        int maxima = INT_MIN;
-        maxima = max(maxima ,abs(root->val- rootData));
-        maxima = max(maxima,solve(root->left,rootData));
-        maxima = max(maxima,solve(root->right,rootData));
-        return maxima;
+    int dfs(TreeNode* node, int ancestorMin, int ancestorMax) {
+        if (!node) return ancestorMax - ancestorMin;
+
+        // Update ancestorMin and ancestorMax for the current node
+        ancestorMin = min(ancestorMin, node->val);
+        ancestorMax = max(ancestorMax, node->val);
+
+        // Recursively calculate the maximum difference in the left and right subtrees
+        int leftDiff = dfs(node->left, ancestorMin, ancestorMax);
+        int rightDiff = dfs(node->right, ancestorMin, ancestorMax);
+
+        // Return the maximum difference among the current node's subtree and its subtrees
+        return  max(leftDiff, rightDiff);
     }
     int maxAncestorDiff(TreeNode* root) {
-        if(root==NULL)return 0;
-        int ans = INT_MIN;
-        int data = solve(root,root->val);
-        int left = maxAncestorDiff(root->left);
-        int right = maxAncestorDiff(root->right);
-        ans = max({data,left,right});
-        return ans;
+        if (!root) return 0;
+        return dfs(root, root->val, root->val);
     }
 };
