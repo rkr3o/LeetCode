@@ -1,9 +1,18 @@
 class Solution {
+    
+    int getRequiredChar(string s) {
+        int lowercase = 1, uppercase = 1, digit = 1;
+        for (char c : s) {
+            if (islower(c)) lowercase = 0;
+            else if (isupper(c)) uppercase = 0;
+            else if (isdigit(c)) digit = 0;
+        }
+        return lowercase + uppercase + digit;
+    }
 public:
     int strongPasswordChecker(string s) {
         int requiredChar = getRequiredChar(s);
-        if (s.length() < 6) return max(requiredChar, 6 - static_cast<int>(s.length()));
-
+        if (s.length() < 6) return max(requiredChar, 6 - (int)(s.length()));
         int replace = 0;
         int oned = 0;
         int twod = 0;
@@ -22,23 +31,9 @@ public:
         if (s.length() <= 20) return max(requiredChar, replace);
 
         int deleteCount = s.length() - 20;
-
         replace -= min(deleteCount, oned);
         replace -= min(max(deleteCount - oned, 0), twod) / 2;
         replace -= max(deleteCount - oned - twod, 0) / 3;
-
         return deleteCount + max(requiredChar, replace);
-    }
-
-private:
-    int getRequiredChar(string s) {
-        int lowercase = 1, uppercase = 1, digit = 1;
-        for (char c : s) {
-            if (islower(c)) lowercase = 0;
-            else if (isupper(c)) uppercase = 0;
-            else if (isdigit(c)) digit = 0;
-        }
-
-        return lowercase + uppercase + digit;
     }
 };
