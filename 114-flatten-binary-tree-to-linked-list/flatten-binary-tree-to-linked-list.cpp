@@ -11,25 +11,21 @@
  */
 class Solution {
 public:
+    void preorder(TreeNode* root , vector<int>&ans)
+    {
+        if(root==NULL)return ;
+        ans.push_back(root->val);
+        preorder(root->left,ans);
+        preorder(root->right,ans);
+    }
     void flatten(TreeNode* root) {
-        while (root) 
-        {
-            if (root->left && root->right) 
-            {
-                TreeNode* t = root->left;
-                while (t->right)
-                {
-                     t = t->right;
-                }
-                t->right = root->right;
-            }
-
-            if(root->left)
-            {
-                root->right = root->left;
-            }
-            root->left = NULL;
-            root = root->right;
+        vector<int>ans;
+        preorder(root,ans);
+        TreeNode* newRoot = root;
+        for (int i = 1; i < ans.size(); ++i) {
+            newRoot->left = nullptr;
+            newRoot->right = new TreeNode(ans[i]);
+            newRoot = newRoot->right;
         }
     }
 };
