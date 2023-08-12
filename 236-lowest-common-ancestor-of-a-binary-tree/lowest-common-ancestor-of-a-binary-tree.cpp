@@ -20,8 +20,8 @@ public:
             return true;
         }
         
-        if ((root->left && getPath(root->left, target, path)) ||
-            (root->right && getPath(root->right, target, path))) {
+        if ((getPath(root->left, target, path)) ||
+            (getPath(root->right, target, path))) {
             return true;
         }
         
@@ -42,7 +42,9 @@ public:
         for (int i = 0; i < n; ++i) {
             if (path1[i] == path2[i]) {
                 lca = new TreeNode(path1[i]);
-            } 
+            } else {
+                break;
+            }
         }
         
         return lca;
