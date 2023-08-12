@@ -18,7 +18,9 @@ public:
             {
                 TreeNode* t = root->left;
                 while (t->right)
-                t = t->right;
+                {
+                     t = t->right;
+                }
                 t->right = root->right;
             }
 
