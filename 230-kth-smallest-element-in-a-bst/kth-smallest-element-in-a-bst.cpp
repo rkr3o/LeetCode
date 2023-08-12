@@ -11,16 +11,26 @@
  */
 class Solution {
 public:
-    void solve(TreeNode* root , vector<int>&ans)
-    {
-        if(root==NULL)return ;
-        solve(root->left,ans);
-        ans.push_back(root->val);
-        solve(root->right,ans);
+    int solve(TreeNode* root, int& k) {
+        if (root == nullptr) {
+            return -1; // Using -1 to indicate that we haven't found the kth element yet.
+        }
+        
+        int left = solve(root->left, k);
+        if (k == 0) {
+            return left; // Return the found kth element.
+        }
+        
+        k--;
+        
+        if (k == 0) {
+            return root->val; // Return the current node's value as kth element.
+        }
+        
+        return solve(root->right, k);
     }
+    
     int kthSmallest(TreeNode* root, int k) {
-        vector<int>ans;
-        solve(root,ans);
-        return ans[k-1];
+        return solve(root, k);
     }
 };
