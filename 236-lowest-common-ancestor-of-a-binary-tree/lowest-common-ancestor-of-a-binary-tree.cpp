@@ -42,9 +42,7 @@ public:
         for (int i = 0; i < n; ++i) {
             if (path1[i] == path2[i]) {
                 lca = new TreeNode(path1[i]);
-            } else {
-                break;
-            }
+            } 
         }
         
         return lca;
