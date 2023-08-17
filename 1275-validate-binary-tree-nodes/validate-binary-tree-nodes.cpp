@@ -1,84 +1,74 @@
-class DSU {
-    public:
-    vector<int> parent, rank, size;
-
-public:
-    DSU(int n) {
-        parent.resize(n);
-        rank.resize(n, 0);
-        size.resize(n, 1);
-        iota(parent.begin(), parent.end(), 0);
-    }
-
-    int find(int v) {
-        if (parent[v] != v)
-            parent[v] = find(parent[v]);
-        return parent[v];
-    }
-
-    void unionByRank(int u, int v) {
-        u = find(u);
-        v = find(v);
-        if (u != v) {
-            if (rank[u] < rank[v])
-                swap(u, v);
-            parent[v] = u;
-            if (rank[u] == rank[v])
-                rank[u]++;
-        }
-    }
-
-    void unionBySize(int u, int v) {
-        u = find(u);
-        v = find(v);
-        if (u != v) {
-            if (size[u] < size[v])
-                swap(u, v);
-            parent[v] = u;
-            size[u] += size[v];
-        }
-    }
-};
-
 class Solution {
 public:
-    bool validateBinaryTreeNodes(int n, vector<int>& leftChild, vector<int>& rightChild) {
-        DSU ds(n);
-        vector<int> p(n, -1);
-
-        for (int i = 0; i < n; i++) {
-            if (rightChild[i] != -1) {
-                int u = ds.find(i);
-                if (p[rightChild[i]] != -1) return false;
-                int v = ds.find(rightChild[i]);
-                p[rightChild[i]] = i;
-                if (u == v) return false;
-                ds.unionBySize(i, rightChild[i]);
-            }
-            if (leftChild[i] != -1) {
-                int u = ds.find(i);
-                int v = ds.find(leftChild[i]);
-                if (p[leftChild[i]] != -1) return false;
-                p[leftChild[i]] = i;
-                if (u == v) return false;
-                ds.unionBySize(i, leftChild[i]);
-            }
+    bool validateBinaryTreeNodes(int n, vector<int>& leftChild, vector<int>& rightChild) { 
+        
+        // CREATE A GRAPH
+       
+        vector<vector<int>> graph(n); 
+        
+        //NUMBER OF EDGES IN GRAPH
+        int edge = 0; 
+        
+        for(int i = 0; i < n; i++) {   
+            if(leftChild[i] != -1) {
+                graph[i].push_back(leftChild[i]);   
+                ++edge;
+            } 
+            if(rightChild[i] != -1) { 
+                graph[i].push_back(rightChild[i]); 
+                ++edge;
+            } 
         }
-
-        int cnt = 0;
-        int size = 0;
-
-        for (int i = 0; i < n; i++) {
-            if (ds.find(i) == i) {
-                cnt++;
-                size = ds.size[i];
+        
+        //CHECK FOR SELF LOOPS AND CYCLES
+        queue<int> q; 
+        vector<bool> visited(n, false); 
+        vector<int> indegree(n, 0); 
+        int ctr = 0; 
+        
+        for(int i = 0; i < graph.size(); i++) { 
+            for(int j = 0; j < graph[i].size(); j++) { 
+                indegree[graph[i][j]]++;
             }
-        }
-
-        if (cnt == 1) {
-            return size == n;
-        }
-
-        return false;
+        } 
+        
+        for(int i = 0; i < indegree.size(); i++) {  
+            
+            //NODE SHOULD HAVE EITHER ZERO OR ONE AS INDEGREE 
+            
+            if(indegree[i] > 1) { 
+                return false;
+            }
+            if(indegree[i] == 0) { 
+                q.push(i); 
+                ctr++;
+            }
+        } 
+        
+        while(!q.empty()) { 
+            int front = q.front(); 
+            visited[front] = true; 
+            q.pop(); 
+            
+            for(int i : graph[front]) { 
+                
+                indegree[i]--;
+                
+                if(!visited[i] && indegree[i] == 0) { 
+                    q.push(i); 
+                    ctr++;
+                }
+            }
+        } 
+        
+        //IF CYCLES ARE PRESENT OR EDGES ARE NOT EQUAL TO N-1 RETURN FALSE 
+        
+        if(ctr != n || edge != n-1) { 
+            return false;
+        }  
+        
+        //ELSE RETURN TRUE 
+        
+        return true;
     }
 };
