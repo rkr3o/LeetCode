@@ -14,19 +14,15 @@ public:
     int solve(TreeNode* root, int& k) {
         if (root == nullptr) {
             return -1; // Using -1 to indicate that we haven't found the kth element yet.
-        }
-        
+        }   
         int left = solve(root->left, k);
-        if (k == 0) {
+        if (left!=-1) {
             return left; // Return the found kth element.
-        }
-        
-        k--;
-        
+        }  
+        k--;   
         if (k == 0) {
             return root->val; // Return the current node's value as kth element.
-        }
-        
+        }       
         return solve(root->right, k);
     }
     
