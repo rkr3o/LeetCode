@@ -1,54 +1,41 @@
 class Solution {
-    bool isSafe(int row, int col, vector<string>& parts, int n) {
-        for (int i = 0; i < n; i++) {
-            if (parts[i][col] == 'Q') {
-                return false; // Check vertical threats
-            }
-            if (parts[row][i] == 'Q') {
-                return false; // Check horizontal threats
-            }
-        }
-        
-        for (int i = -1; i <= 1; i++) {
-            for (int j = -1; j <= 1; j++) {
-                if (i == 0 && j == 0) {
-                    continue;
-                }
-                int newRow = row + i;
-                int newCol = col + j;
-                while (newRow >= 0 && newRow < n && newCol >= 0 && newCol < n) {
-                    if (parts[newRow][newCol] == 'Q') {
-                        return false; // Check diagonal threats
-                    }
-                    newRow += i;
-                    newCol += j;
-                }
-            }
-        }
-        
+public:
+    vector<vector<string>> ret;
+    bool is_valid(vector<string> &board, int row, int col){
+        // check col
+        for(int i=row;i>=0;--i)
+            if(board[i][col] == 'Q') return false;
+        // check left diagonal
+        for(int i=row,j=col;i>=0&&j>=0;--i,--j)
+            if(board[i][j] == 'Q') return false;
+        //check right diagonal
+        for(int i=row,j=col;i>=0&&j<board.size();--i,++j)
+            if(board[i][j] == 'Q') return false;
         return true;
     }
-    
-    void solve(int col, vector<vector<string>>& ans, vector<string>& parts, int n) {
-        if (col == n) {
-            ans.push_back(parts);
+    void dfs(vector<string> &board, int row){
+        // exit condition
+        if(row == board.size()){
+            ret.push_back(board);
             return;
         }
-        
-        for (int row = 0; row < n; row++) {
-            if (isSafe(row, col, parts, n)) {
-                parts[row][col] = 'Q';
-                solve(col + 1, ans, parts, n);
-                parts[row][col] = '.';
+        // iterate every possible position
+        for(int i=0;i<board.size();++i){
+            if(is_valid(board,row,i)){
+                // make decision
+                board[row][i] = 'Q';
+                // next iteration
+                dfs(board,row+1);
+                // back-tracking
+                board[row][i] = '.';
             }
         }
     }
-
-public:
     vector<vector<string>> solveNQueens(int n) {
-        vector<vector<string>> ans;
-        vector<string> parts(n, string(n, '.'));
-        solve(0, ans, parts, n);
-        return ans;
+		// return empty if n <= 0
+        if(n <= 0) return {{}};
+        vector<string> board(n,string(n,'.'));
+        dfs(board,0);
+        return ret;
     }
 };
