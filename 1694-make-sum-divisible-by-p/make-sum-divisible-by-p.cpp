@@ -1,26 +1,36 @@
 class Solution {
 public:
     int minSubarray(vector<int>& nums, int p) {
-        int n = nums.size();
-        int target = 0;
-        for(auto x: nums)
-           target = (target + x) % p; // sum % k essentially
-        unordered_map<int, int> mp; // Our Hasmap
-        mp[0] = -1; // if we are looking for 0, we can take the complete subarray[0...i]
-        int cur = 0;
-        int ans = 1e9;
-        if(!target) return 0;
-        for(int i = 0; i<n; i++){
-            cur = (cur + nums[i]) % p;
-            // we need to reach the target, lmao
-            int need = (cur - target + p) % p; // This is the element we are looking for
-            if(mp.find(need) != mp.end()){
-                ans = min(ans, i - mp[need]);
-            }
-            mp[cur] = i;  // hashing the current occurence as the latest occurence of cur % p      
+         int n = nums.size();
+        long long sum = 0;
+        for (int num : nums) {
+            sum += num;
         }
         
-        if(ans >= n) return -1; // we cannot delethe complete array, hence
-        return ans;
+        int target = sum % p;
+        if (target == 0) {
+            return 0; // No need to remove any subarray
+        }
+        
+        unordered_map<int, int> mp;
+        mp[0] = -1; // Initial remainder of 0 is achieved before the first element
+        
+        int pre = 0;
+        int minLength = n;
+
+        for (int i = 0; i < n; i++) 
+        {
+            pre = (pre + nums[i]) % p;
+            int req = (pre - target + p) % p;
+            if (mp.find(req) != mp.end()) {
+                int len = i - mp[req];
+                minLength = min(minLength, len);
+            }
+            mp[pre] = i;
+        }
+        if (minLength == n) {
+            return -1; // It's impossible to find a valid subarray to remove
+        }
+        return minLength;
     }
 };
