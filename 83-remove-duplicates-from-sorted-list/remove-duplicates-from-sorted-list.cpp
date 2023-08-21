@@ -11,28 +11,25 @@
 class Solution {
 public:
     ListNode* deleteDuplicates(ListNode* head) {
-        if (head == nullptr || head->next == nullptr) {
-            return head; // No duplicates possible
-        }
-    
-        unordered_set<int> uniqueValues;
-        ListNode *current = head;
-        ListNode *prev = nullptr;
-    
-        while (current != nullptr) {
-            if (uniqueValues.find(current->val) != uniqueValues.end()) {
-                // Duplicate found, remove the current node
-                prev->next = current->next;
-                delete current;
-                current = prev->next;
-            } else {
-                // New unique value, add it to the set and move pointers
-                uniqueValues.insert(current->val);
-                prev = current;
-                current = current->next;
+         ListNode *temp = head, *prev = head;
+        // Traverse list till the last node
+        while (temp != NULL) {
+            // Compare values of both pointers
+            if (temp->val != prev->val) {
+                // if the value of prev is not equal to the
+                // value of temp that means there are no more
+                // occurrences of the prev data-> So we can set
+                // the next of prev to the temp node->*/
+                prev->next = temp;
+                prev = temp;
             }
+            // Set the temp to the next node
+            temp = temp->next;
         }
-    
+        // This is the edge case if there are more than one
+        // occurrences of the last element
+        if (prev != temp)
+            prev->next = NULL;
         return head;
     }
 };
