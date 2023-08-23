@@ -11,22 +11,28 @@
  */
 class Solution {
 public:
-    int solve(TreeNode* root, int& k) {
-        if (root == nullptr) {
-            return -1; // Using -1 to indicate that we haven't found the kth element yet.
-        }   
-        int left = solve(root->left, k);
-        if (left!=-1) {
-            return left; // Return the found kth element.
-        }  
-        k--;   
-        if (k == 0) {
-            return root->val; // Return the current node's value as kth element.
-        }       
-        return solve(root->right, k);
+    void solve(TreeNode* root , int &ans , int &cnt , int k)
+    {
+        if(root==NULL)return ;
+        solve(root->left,ans,cnt,k);
+        if(cnt==k)
+        {
+            ans=root->val;
+            cnt++;
+            return;
+        }
+        else
+        {
+            cnt++;
+        }
+        solve(root->right,ans,cnt,k);
     }
-    
     int kthSmallest(TreeNode* root, int k) {
-        return solve(root, k);
+        if(root==NULL)return -1;
+        int idx=  1;
+        int ans = -1;
+        
+        solve(root,ans,idx,k);
+        return ans;
     }
 };
