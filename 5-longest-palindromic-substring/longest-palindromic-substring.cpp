@@ -1,33 +1,33 @@
-class Solution {
+ class Solution {
 public:
-    int expandFromMiddle(const string& s, int st, int end) {
-        int n = s.size();
-        while (st >= 0 && end < n && s[st] == s[end]) {
-            st--;
-            end++;
+
+    bool checkPalindrome(string &s) {
+        int l = 0;
+        int h = s.size() - 1;
+
+        while (l <= h) {
+            if (s[l++] != s[h--]) return false;
         }
-        return end - st - 1;
+        return true;
     }
-    string longestPalindrome(string s) {
+ void solve(int ind, string &s, string &ans) {
+        if (ind >= s.size()) return;
         int n = s.size();
-        if (n == 0) return "";
-
-        int maxima = 1;
-        int start = 0; // Starting index of the longest palindromic substring
-
-        for (int i = 0; i < n; i++) {
-            int even = expandFromMiddle(s, i, i);
-            int odd = expandFromMiddle(s, i, i + 1);
-
-            int cur = max(even, odd);
-
-            if (cur > maxima) {
-                maxima = cur;
-                start = i - (cur - 1) / 2; // Calculate the starting index of the new longest palindrome
+        string temp;
+        for (int i = ind; i < n; i++) {
+            temp.push_back(s[i]);
+            if (checkPalindrome(temp) == true) {
+                if (temp.size() > ans.size()) {
+                    ans = temp;
+                }
             }
         }
+        solve(ind + 1, s, ans);  // Move to the next index and continue the search
+    }
 
-        // Extract the longest palindromic substring
-        return s.substr(start, maxima);
+    string longestPalindrome(string s) {
+        string ans;
+        solve(0, s, ans);
+        return ans;
     }
 };
