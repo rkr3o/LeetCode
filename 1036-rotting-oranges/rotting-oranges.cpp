@@ -26,7 +26,7 @@ public:
                 int steps = q.front().first;
                 int row = q.front().second.first;
                 int col = q.front().second.second;
-                maxima = max(maxima, steps);
+                maxima = steps;
                 q.pop();
                 
                 for(int j = 0; j < 4; j++) {
