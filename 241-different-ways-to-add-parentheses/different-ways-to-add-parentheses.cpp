@@ -1,31 +1,35 @@
 class Solution {
 public:
     vector<int> diffWaysToCompute(string expression) {
-        vector<int> result;
-        for (int i = 0; i < expression.size(); i++) {
-            char c = expression[i];
-            if (c == '+' || c == '-' || c == '*') {
-                vector<int> leftResults = diffWaysToCompute(expression.substr(0, i));
-                vector<int> rightResults = diffWaysToCompute(expression.substr(i + 1));
-
-                for (int left : leftResults) {
-                    for (int right : rightResults) {
-                        if (c == '+') {
-                            result.push_back(left + right);
-                        } else if (c == '-') {
-                            result.push_back(left - right);
-                        } else if (c == '*') {
-                            result.push_back(left * right);
-                        }
+        vector<int>ans;
+        for(int i = 0 ; i < expression.size() ; i++)
+        {
+            char ch = expression[i];
+            if(ch=='+' || ch=='-' || ch=='*')
+            {
+                vector<int>left = diffWaysToCompute(expression.substr(0,i));
+                vector<int>right = diffWaysToCompute(expression.substr(i+1));
+                for(auto x : left)
+                {
+                    for(auto y : right)
+                    {
+                         if(ch=='+')
+                         {
+                            ans.push_back(x+y);
+                         }
+                         else if(ch=='-')
+                         {
+                            ans.push_back(x-y);
+                         }
+                         else
+                         {
+                            ans.push_back(x*y);   
+                         }
                     }
                 }
             }
         }
-
-        if (result.empty()) {
-            result.push_back(stoi(expression));
-        }
-
-        return result;
+        if(ans.empty())ans.push_back(stoi(expression));
+        return ans;
     }
 };
