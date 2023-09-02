@@ -1,60 +1,56 @@
+// Abhijit Dey
 class Solution {
 public:
-    string shortestCommonSupersequence(string s, string t) {
-     int n = (int)s.length();
-     int m = (int)t.length();
-    
-    vector<vector<int>>dp(n+1,vector<int>(m+1,0));
-    
-    for(int i =1 ;i<=n ; i++)
+    string s1,s2;
+    int dp[1005][1005];
+    int lcs(int i,int j)
     {
-        for(int j =1 ; j<=m ; j++)
+        int ans=0;
+        if(i==s1.length() or j==s2.length())return 0;
+        if(dp[i][j]!=-1)return dp[i][j];
+        if(s1[i]==s2[j])
+            ans=1+lcs(i+1,j+1);
+        else
+            ans=max(lcs(i+1,j), lcs(i,j+1));
+        return dp[i][j]=ans;
+    }
+    string shortestCommonSupersequence(string str1, string str2) 
+    {
+        s1=str1;
+        s2=str2;
+        memset(dp,-1,sizeof(dp));
+        lcs(0,0);
+        int i=0,j=0;
+        string res;
+        while(i<str1.length() && j<str2.length())
         {
-            if(s[i-1]==t[j-1])
+            if(str1[i]==str2[j])
             {
-                dp[i][j] = 1+dp[i-1][j-1];
+                res+=str1[i];
+                i++;
+                j++;
             }
-            else {
-                dp[i][j] = max(dp[i-1][j],dp[i][j-1]);
+            else if(dp[i+1][j]<dp[i][j+1])
+            {
+                res+=str2[j];
+                j++;
+            }
+            else 
+            {
+                res+=str1[i];
+                i++;
             }
         }
-    }
-    
-    string ans="";
-    
-    int i = n , j = m ;
-    while(i>0 and j>0)
-    {
-        if(s[i-1]==t[j-1])
+        while(i<str1.length())
         {
-            ans+=s[i-1];
-            i--;
-            j--;           
+            res+=str1[i];
+            i++;
         }
-        else if (dp[i-1][j]>dp[i][j-1])
+        while(j<str2.length())
         {
-            ans+=s[i-1];
-            i--; 
+            res+=str2[j];
+            j++;
         }
-        else{
-            ans+=t[j-1];
-            j--;
-        }
-    }
-    
-    while(i>0)
-    {
-        ans+=s[i-1];
-        i--;
-    }
-    while(j>0)
-    {
-        ans+=t[j-1];
-        j--;
-    }
-    
-    reverse(ans.begin(),ans.end());
-    return ans ;
-
+        return res;
     }
 };
