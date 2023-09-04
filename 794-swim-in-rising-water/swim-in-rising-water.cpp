@@ -1,7 +1,3 @@
-#include <vector>
-#include <queue>
-#include <utility>
-
 class Solution {
 public:
     int swimInWater(vector<vector<int>>& grid) {
@@ -13,21 +9,17 @@ public:
         int drow[] = {-1, 0, +1, 0};
         int dcol[] = {0, +1, 0, -1};
         int result = 0; // Store the result, which is the minimum time needed.
-
         while (!pq.empty()) {
             int element = pq.top().first;
             int row = pq.top().second.first;
             int col = pq.top().second.second;
             pq.pop();
-            
             // Update the result with the maximum of the current element and result.
             result = max(result, element);
-
             // If we reached the bottom-right corner, return the result.
             if (row == n - 1 && col == n - 1) {
                 return result;
             }
-
             for (int i = 0; i < 4; i++) {
                 int nrow = row + drow[i];
                 int ncol = col + dcol[i];
