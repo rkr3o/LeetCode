@@ -1,45 +1,42 @@
+#include <vector>
+#include <queue>
+#include <utility>
+
 class Solution {
 public:
     int swimInWater(vector<vector<int>>& grid) {
         int n = grid.size();
-        int res = 0;
-        auto compare = [](const pair<int, pair<int, int>>& a, const pair<int, pair<int, int>>& b) {
-            return a.first > b.first;
-        };
-        priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, decltype(compare)> pq(compare);
-        pq.push({grid[0][0], {0, 0}});
         vector<vector<int>> vis(n, vector<int>(n, 0));
+        priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>> pq;
+        pq.push({grid[0][0], {0, 0}});
         vis[0][0] = 1;
-        int drow[]={-1,0,+1,0};
-        int dcol[]={0,+1,0,-1};
+        int drow[] = {-1, 0, +1, 0};
+        int dcol[] = {0, +1, 0, -1};
+        int result = 0; // Store the result, which is the minimum time needed.
 
-        while (!pq.empty()) 
-        {
-            auto p = pq.top();
+        while (!pq.empty()) {
+            int element = pq.top().first;
+            int row = pq.top().second.first;
+            int col = pq.top().second.second;
             pq.pop();
-            int element = p.first;
-            int row = p.second.first;
-            int col = p.second.second;
+            
+            // Update the result with the maximum of the current element and result.
+            result = max(result, element);
 
-            res = max(res, element);
+            // If we reached the bottom-right corner, return the result.
+            if (row == n - 1 && col == n - 1) {
+                return result;
+            }
 
-            if (row == n - 1 && col == n - 1)
-                return res;
-            for(int i = 0 ; i < 4 ; i++)
-            {
-                int nrow = row+drow[i];
+            for (int i = 0; i < 4; i++) {
+                int nrow = row + drow[i];
                 int ncol = col + dcol[i];
-                if(nrow>=0 and ncol >=0 and nrow< n and ncol < n and !vis[nrow][ncol])
-                {
-                    vis[nrow][ncol]=1;
-                    pq.push({grid[nrow][ncol] , {nrow,ncol}});
+                if (nrow >= 0 && ncol >= 0 && nrow < n && ncol < n && !vis[nrow][ncol]) {
+                    pq.push({grid[nrow][ncol], {nrow, ncol}});
+                    vis[nrow][ncol] = 1;
                 }
             }
-             
         }
-        return -1;
+        return -1; // This should not be reached if the grid is valid.
     }
 };
-//time complexity: O(n^2*logn)
-// pq contains at most n^2 elements, pop time complexity each time is is O(logn^2) = O(2*logn)
-// At most we will pop n^2 times
