@@ -1,23 +1,26 @@
 class Solution {
 public:
    ListNode* reverseBetween(ListNode* head, int x, int y) {
-    vector<int> list;
-    while (head != NULL) {
-        list.push_back(head->val);
-        head = head->next;
-    }
-    reverse(list.begin() + x - 1, list.begin() + y); // Fixed range for reverse
-    ListNode* root = NULL;
-    ListNode* tail = NULL;
-    for (int i = 0; i < list.size(); i++) {
-        if (root == NULL) {
-            root = new ListNode(list[i]);
-            tail = root;
-        } else {
-            tail->next = new ListNode(list[i]);
-            tail = tail->next;
-        }
-    }
-    return root;
+    if(x>=y || head==NULL )return head ;
+     
+     ListNode* dummy = new ListNode(0);
+     dummy->next = head;
+     
+     ListNode* pre = dummy ; 
+     for(int i = 0 ; i < x-1; i++)
+     {
+         pre = pre->next;
+     }
+    // cout<<pre->val<<endl;
+     ListNode* start = pre->next;
+     ListNode* end = start->next;
+     for(int i = 0 ; i < y-x ; i++)
+     {
+         start->next = end->next;
+         end->next = pre->next;
+         pre->next = end;
+         end = start->next;
+     }
+     return dummy->next;
    }
 };
