@@ -3,16 +3,16 @@ public:
     bool good(vector<int>& nums, int k,int mid)
     {
         int n = nums.size();
+        int take=0;
         for(int i = 0 ; i < n ;i++)
         {
              if(nums[i]<=mid)
              {
                  i++;
-                 k--;
+                 take++;
              }
-             if(k==0)return true;
         }
-        return k == 0;
+        return take>=k;
     }
     int minCapability(vector<int>& nums, int k) 
     {
