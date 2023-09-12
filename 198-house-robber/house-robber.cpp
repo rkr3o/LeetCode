@@ -13,6 +13,15 @@ public:
         memset(dp,-1,sizeof(dp));
         int n = nums.size();
         if(n==0)return 0 ;
-        return solve(n-1,nums);
+        vector<int>dp(n,0);
+        dp[0]=nums[0];
+        for(int i = 1 ; i < n ; i++)
+        {
+            int notPick = dp[i-1];
+            int pick = nums[i];
+            if(i>1)pick+=dp[i-2];
+            dp[i] = max(pick,notPick);
+        }
+        return dp[n-1];
     }
 };
