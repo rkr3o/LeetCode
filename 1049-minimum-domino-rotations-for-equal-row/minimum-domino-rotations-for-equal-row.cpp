@@ -1,30 +1,66 @@
-#include <vector>
-#include <unordered_map>
-#include <algorithm>
-
 class Solution {
 public:
-    int minDominoRotations(std::vector<int>& tops, std::vector<int>& bottoms) {
-        int n = tops.size();
+    int minDominoRotations(vector<int>& a, vector<int>& b) {
+        unordered_map<int, int> mp1;
+        unordered_map<int, int> mp2;
         
-        // Helper function to find the minimum number of rotations needed for a given value 'x'
-        auto findMinRotations = [&](int x) {
-            int rotations_top = 0, rotations_bottom = 0;
-            
-            for (int i = 0; i < n; i++) {
-                if (tops[i] != x && bottoms[i] != x) {
-                    return -1; // It's not possible to make all tops or bottoms the same with value 'x'.
-                }
-                if (tops[i] != x) rotations_top++;
-                if (bottoms[i] != x) rotations_bottom++;
+        for (auto x : a)
+            mp1[x]++;
+        for (auto x : b)
+            mp2[x]++;
+        
+        int maxima1 = 0, maxima2 = 0;
+        int freqmaxima1 = 0;
+        int freqmaxima2 = 0;
+        
+        for (auto& [x, y] : mp1) {
+            if (y > freqmaxima1) {
+                maxima1 = x;
+                freqmaxima1 = y;
             }
+        }
+        
+        for (auto& [x, y] : mp2) {
+            if (y > freqmaxima2) {
+                maxima2 = x;
+                freqmaxima2 = y;
+            }
+        }
+        
+        int cnt1 = 0;
+        int cnt2 = 0;
+        bool f = 0;
+        bool f2 = 0;
+        
+        for (int i = 0; i < a.size(); i++) {
+            if (a[i] != maxima1 and b[i] != maxima1)
+                return -1;
             
-            return std::min(rotations_top, rotations_bottom);
-        };
+            if (a[i] != maxima1) {
+                if (b[i] == maxima1) {
+                    cnt1++;
+                } else {
+                    f = 1;
+                    break;
+                }
+            }
+        }
         
-        int rotations = findMinRotations(tops[0]); // Check tops[0] as the candidate value.
-        if (rotations != -1) return rotations;
+        for (int i = 0; i < a.size(); i++) {
+            if (a[i] != maxima2 and b[i] != maxima2)
+                return -1;
+            else {
+                if (b[i] != maxima2) {
+                    if (a[i] == maxima2) {
+                        cnt2++;
+                    } else {
+                        f2 = 1;
+                        break;
+                    }
+                }
+            }
+        }
         
-        return findMinRotations(bottoms[0]); // If tops[0] didn't work, try bottoms[0].
+        return min(cnt1, cnt2);
     }
 };
