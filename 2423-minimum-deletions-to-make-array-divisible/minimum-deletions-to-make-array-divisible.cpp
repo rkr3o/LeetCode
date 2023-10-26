@@ -1,33 +1,19 @@
- class Solution {
+class Solution {
 public:
-    bool check(int num , unordered_map<int,int>&mp)
-    {
-        for(auto x: mp)
-        {
-            if(x.first%num!=0)return false;
-        }
-        return true;
-    }
     int minOperations(vector<int>& nums, vector<int>& numsDivide) {
-        unordered_map<int,int>mp;
-        unordered_map<int,int>mp2;
-        for(auto x: nums) mp[x]++;
-        for(auto x : numsDivide)mp2[x]++;
-        set<int>st(nums.begin(),nums.end());
-        for(auto x : st)
+        sort(nums.begin(),nums.end());
+        int numGcd = numsDivide[0];
+        int n = nums.size();
+        for(auto x: numsDivide)
         {
-            bool res = check(x,mp2);
-            if(res)
-            {
-                int totalDelete = 0 ;
-                for(auto y : mp)
-                {
-                    if(y.first<x)
-                        totalDelete+=y.second;
-                }
-                return totalDelete;
-            }
-        }  
-        return -1;
+             numGcd = __gcd(numGcd,x);
+        }
+        int cnt = 0 ;
+        for(auto x : nums)
+        {
+            if(numGcd % x)cnt++;
+            else break;
+        }
+        return (cnt==n)?-1:cnt;
     }
 };
