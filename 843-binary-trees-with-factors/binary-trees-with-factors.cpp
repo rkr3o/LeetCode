@@ -15,7 +15,6 @@ public:
     }
     int numFactoredBinaryTrees(vector<int>& arr) {
         unordered_set<int> st(arr.begin(), arr.end());
-        sort(arr.begin(), arr.end());
         long long cnt = 0;
         int n = arr.size();
         unordered_map<int,long long>mp;
