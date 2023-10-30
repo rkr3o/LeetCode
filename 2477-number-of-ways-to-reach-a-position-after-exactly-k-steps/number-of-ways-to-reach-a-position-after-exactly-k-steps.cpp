@@ -1,18 +1,15 @@
 class Solution {
-public:
-    const int mod = 1e9+7;
-    long long dp[4000][1001];
-    int solve(int start, int end, int k) {
-        if (k == 0) {
-            return (start == end) ? 1 : 0;
+public:   
+    int numberOfWays(int st, int end, int k) 
+    {
+        vector<vector<int>> dp(1005,vector<int> (3005,0));
+        int mod = 1e9 +7;
+        dp[0][st+1000] = 1;
+        for(int i=1;i<=k;i++)
+        {
+            for(int j=1;j<=3000;j++)
+                dp[i][j] = (dp[i-1][j+1]+dp[i-1][j-1])%mod;
         }
-        if(dp[start+1000][k]!=-1)return dp[start+1000][k];
-        long long steps1 = solve(start + 1, end, k - 1) % mod;
-        long long steps2 = solve(start - 1, end, k - 1) % mod;
-        return dp[start+1000][k] = (steps1 + steps2) % mod;
-    }
-    int numberOfWays(int startPos, int endPos, int k) {
-        memset(dp,-1,sizeof(dp));
-        return solve(startPos, endPos, k);
+        return dp[k][end+1000];
     }
 };
