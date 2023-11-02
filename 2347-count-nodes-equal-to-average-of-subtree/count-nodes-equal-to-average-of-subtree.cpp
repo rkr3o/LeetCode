@@ -11,24 +11,23 @@
  */
 class Solution {
 public:
-    void getSum(TreeNode* root , int &sum , int &cntElements)
+    int ans = 0 ;
+    pair<int,int>solve(TreeNode* root)
     {
-        if(root==NULL)return;
-        sum+=root->val;
-        cntElements++;
-        getSum(root->left,sum,cntElements);
-        getSum(root->right,sum,cntElements);
+        if(root==NULL)return {0,0};
+        pair<int,int>left = solve(root->left);
+        int lc = left.second;
+        int ls = left.first;
+        pair<int,int>right = solve(root->right);
+        int rc = right.second;
+        int rs = right.first;
+        int sum = ls+rs+root->val;
+        int cnt = 1+rc+lc;
+        if(root->val==sum/cnt)ans++;
+        return {sum,cnt};
     }
-    double averageOfSubtree(TreeNode* root) {
-        if(root==NULL)return 0.0;
-        int cnt = 0 ;
-        int sum = 0 ;
-        int cntElements = 0 ;
-        getSum(root,sum,cntElements);
-        int avg =sum/cntElements;
-        if(avg ==root->val)cnt++;
-        cnt+=averageOfSubtree(root->left);
-        cnt+=averageOfSubtree(root->right);
-        return cnt;
+    int averageOfSubtree(TreeNode* root) {
+        solve(root);
+        return ans;
     }
 };
