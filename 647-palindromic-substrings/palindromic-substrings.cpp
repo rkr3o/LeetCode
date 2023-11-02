@@ -1,5 +1,6 @@
 class Solution {
 public:
+    int dp[1000];
     bool isPalindrome(string s) {
        string t = s;
        reverse(t.begin(),t.end());
@@ -9,6 +10,7 @@ public:
         if (ind >= s.size()) {
             return 0;
         }
+        if(dp[ind]!=-1)return dp[ind];
         int cnt = 0;
         string temp = "";
         for (int i = ind; i < s.size(); i++) {
@@ -19,10 +21,11 @@ public:
         }
         // Recursively count palindromic substrings starting from the next index.
         cnt += countPalindromicSubstrings(ind + 1, s);
-        return cnt;
+        return dp[ind]= cnt;
     }
     int countSubstrings(string s) {
         int n = s.size();
+        memset(dp,-1,sizeof(dp));
         return countPalindromicSubstrings(0, s);
     }
 };
