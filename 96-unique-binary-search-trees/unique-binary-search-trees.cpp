@@ -1,19 +1,20 @@
 class Solution {
 public:
-   int dp[1000];
-    int catalan(int n)
+    int dp[20];
+    int solve(int n )
     {
-        if(n<=1)return 1 ;
+        if(n<=1)return 1;
         if(dp[n]!=-1)return dp[n];
         int ans = 0 ;
-        for(int i = 0 ; i < n ; i++)
+        for(int i =1 ; i <= n ; i++)
         {
-            ans+=catalan(i)*catalan(n-i-1);
+            ans+=solve(i-1)*solve(n-i);
         }
-        return dp[n] = ans;
+        return dp[n]= ans;
     }
-    int numTrees(int n) {
-      memset(dp,-1,sizeof(dp));
-           return catalan(n);
+    int numTrees(int n) 
+    {
+        memset(dp,-1,sizeof(dp));
+        return solve(n);
     }
 };
