@@ -1,21 +1,22 @@
 class Solution {
 public:
     int dp[1001][1001];
-    int solve(int steps , int cur , int add , int target)
+    int solve( int cur , int add , int target)
     {
-         if(steps>target || cur>target)return INT_MAX;
+         if(cur>target)
+           return 1e9;
          if(cur==target)
          {
-             return steps;
+             return 0;
          }
-         if(dp[steps][cur]!=-1)return dp[steps][cur];
-         int paste = solve(steps+1,cur+add,add,target);
-         int copyPaste = solve(steps+2 , 2*cur , cur , target);
-         return dp[steps][cur] = min(paste,copyPaste);
+         if(dp[cur][add]!=-1)return dp[cur][add];
+         int paste = 1+solve(cur+add,add,target);
+         int copyPaste = 2+solve(2*cur , cur , target);
+         return dp[cur][add] = min(paste,copyPaste);
     }
     int minSteps(int n) {
         if(n==1)return 0;
         memset(dp,-1,sizeof(dp));
-        return solve(1,1,1,n);
+        return solve(1,1,n)+1;
     }
 };
