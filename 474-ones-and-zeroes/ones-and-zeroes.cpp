@@ -1,19 +1,22 @@
 class Solution {
 public:
-    int findMaxForm(vector<string>& strs, int m, int n) {
-        vector<vector<int>> dp(m + 1, vector<int>(n + 1, 0));
-        
-        for (const string& str : strs) {
-            int zeros = count(str.begin(), str.end(), '0');
-            int ones = str.size() - zeros;
-            
-            for (int i = m; i >= zeros; --i) {
-                for (int j = n; j >= ones; --j) {
-                    dp[i][j] = max(dp[i][j], dp[i - zeros][j - ones] + 1);
-                }
-            }
+    int dp[601][101][101];
+    int solve(int ind , int n , int m , vector<string>&ans)
+    {
+        if(ind>=ans.size())return 0;
+        if(dp[ind][n][m]!=-1)return dp[ind][n][m];
+        int zeros = count(begin(ans[ind]),end(ans[ind]),'0');
+        int ones = ans[ind].size()-zeros;
+        int notPick = solve(ind+1,n,m,ans);
+        int pick = INT_MIN;
+        if(zeros<=n and ones<=m)
+        {
+            pick = 1+solve(ind+1,n-zeros,m-ones,ans);
         }
-        
-        return dp[m][n];
+        return dp[ind][n][m]= max(pick,notPick);
+    }
+    int findMaxForm(vector<string>& strs, int m, int n) {
+        memset(dp,-1,sizeof(dp));
+        return solve(0,m,n,strs);
     }
 };
