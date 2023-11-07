@@ -1,27 +1,34 @@
 class Solution {
 public:
-    bool isRobotBounded(string s) {
-        int drow[]={-1,0,+1,0};
-        int dcol[]={0,+1,0,-1};
-        int d = 0 , x =0 , y = 0 ;
-        for(int i = 0; i < s.size() ; i++)
-        {
-             if(s[i]=='L')
-             {
-                 //i = (i+1) % 4 will turn right
-                 d = (d+1)%4;
-             }
-             else if(s[i]=='R')
-             {
-                 //i = (i+3) % 4 will turn left
-                 d = (d+3)%4;
-             }
-             else
-             {
-                 x = x+drow[d];
-                 y = y+dcol[d];
-             }
+    bool isRobotBounded(string instructions) {
+        int dir = 100;
+        int up = 0;
+        int side = 0;
+        for(int i = 0;i<instructions.length();i++){
+            if(instructions[i]=='G'){
+                if(dir%4==0){
+                    up++;
+                }
+                else if(dir%4==1){
+                    side++;
+                }
+                else if(dir%4==2){
+                    up--;
+                }
+                else{
+                    side--;
+                }
+            }
+            else if(instructions[i]=='L'){
+                dir--;
+            }
+            else{
+                dir++;
+            }
         }
-        return x==0 and y==0 || d!=0;
+        if((up==0 && side==0) || (dir%4!=0)){
+            return true;
+        }
+        return false;
     }
 };
