@@ -2,6 +2,7 @@ class Solution {
 public:
     vector<int> ans;
     unordered_set<int> st;
+    #define print(v) for (const auto& x : v) {cout << x << " ";} cout<<endl;
     void solve(int src, map<int, vector<int>>& mp, unordered_set<int>& st) {
         ans.push_back(src);
         st.insert(src);
@@ -19,6 +20,13 @@ public:
             mp[u].push_back(v);
             mp[v].push_back(u);
         }
+        // for(auto x : mp)
+        // {
+        //     cout<<x.first<<" ";
+        //     vector<int>t=x.second;
+        //     print(t);
+
+        // }
         int x = 0;
         for (auto& entry : mp) {
             if (entry.second.size() == 1) {
@@ -26,6 +34,7 @@ public:
                 break;
             }
         }
+
         solve(x, mp, st);
         return ans;
     }
