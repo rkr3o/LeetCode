@@ -9,7 +9,6 @@ public:
     unordered_map<int, int> mp;   // timestamp to price mapping
     multiset<int> st;             // multiset to keep track of prices, sorted by price
     int lastTimeStamp = 0;
-    int lastPrice = 0;
     StockPrice() {
         
     }
@@ -19,15 +18,11 @@ public:
         }
         st.insert(price);
         mp[timestamp] = price;
-        
-        if (timestamp >= lastTimeStamp) {
-            lastTimeStamp = timestamp;
-            lastPrice = price;
-        }
+        lastTimeStamp = max(lastTimeStamp,timestamp);
     }
     
     int current() {
-        return lastPrice;
+        return mp[lastTimeStamp];
     }
     int maximum() {
         return *prev(st.end());  // use prev() to get iterator to last element
