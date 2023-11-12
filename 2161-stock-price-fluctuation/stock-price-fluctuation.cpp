@@ -1,9 +1,3 @@
-#include <unordered_map>
-#include <set>
-#include <algorithm>
-
-using namespace std;
-
 class StockPrice {
 public:
     unordered_map<int, int> mp;   // timestamp to price mapping
@@ -20,7 +14,6 @@ public:
         mp[timestamp] = price;
         lastTimeStamp = max(lastTimeStamp,timestamp);
     }
-    
     int current() {
         return mp[lastTimeStamp];
     }
