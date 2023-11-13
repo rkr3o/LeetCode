@@ -1,24 +1,23 @@
 class Solution {
 public:
-    string sortVowels(string s) {
-        set<char>st;
+    string sortVowels(string s) 
+    {
+        unordered_set<char>st={'a','A','e','E','i','I','o','O','u','U'};
         string temp="";
         for(auto &x : s)
         {
-            if(x=='a' || x=='A' || x=='e' || x=='E' || x=='i' || x=='I' || x=='o' || x=='O' || x=='u' || x=='U')
-            {
-                temp+=x;
-            }
+            if(st.contains(x)) 
+               temp+=x;    
         }
         sort(temp.begin(),temp.end());
         int j = 0 ;
         for(auto &x : s)
         {
-            if(x=='a' || x=='A' || x=='e' || x=='E' || x=='i' || x=='I' || x=='o' || x=='O' || x=='u' || x=='U')
-            {
-                x=temp[j];
-                j++;
-            }
+             if(st.contains(x))
+             {
+                  x=temp[j];
+                  j++;
+             }
         }
         return s;
     }
