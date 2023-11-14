@@ -14,8 +14,7 @@ public:
         unordered_map<int, int> mp;
         for (int i = 0; i < n; i++) {
             int diff = nums[i] - rev(nums[i]);
-            cnt += mp[diff];
-            mp[diff]++;
+            cnt += mp[diff]++;
             cnt%=mod;
         }
         return cnt;
