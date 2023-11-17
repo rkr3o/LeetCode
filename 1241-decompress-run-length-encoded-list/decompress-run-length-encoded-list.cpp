@@ -5,10 +5,8 @@ public:
         int n = nums.size();
         for(int i = 0 ; i <= n-2 ; i+=2)
         {
-            int freq = nums[i];
-            int val = nums[i+1];
-            while(freq--)ans.push_back(val);
+            ans.insert(ans.end(),nums[i],nums[i+1]);
         }
         return ans;
     }
-};
+}; 
