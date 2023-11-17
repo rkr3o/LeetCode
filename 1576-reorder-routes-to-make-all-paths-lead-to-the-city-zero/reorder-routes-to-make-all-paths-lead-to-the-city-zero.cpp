@@ -20,18 +20,12 @@ public:
         {
             int u = x[0];
             int v = x[1];
-            adj[u].push_back({v,0});
+            adj[u].push_back({v,1});
             //virtual edge
-            adj[v].push_back({u,1});
+            adj[v].push_back({u,0});
         }
         vector<int>vis(n,0);
-        for(int i = 0 ; i < n ; i++)
-        {
-            if(!vis[i])
-            {
-                solve(i,vis,adj);
-            }
-        }
-        return n-minima-1;
+        solve(0,vis,adj);
+        return minima;
     }
 };
