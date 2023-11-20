@@ -1,9 +1,3 @@
-#include <vector>
-#include <iostream>
-#include <algorithm>
-
-using namespace std;
-
 class Solution {
 public:
     int garbageCollection(vector<string>& garbage, vector<int>& travel) {
@@ -43,7 +37,6 @@ public:
         sum += cntm;
         sum += cntp;
         sum += cntg;
-
         return sum;
     }
 };
