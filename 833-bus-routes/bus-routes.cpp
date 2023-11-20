@@ -13,7 +13,8 @@ public:
         queue<pair<int, int>> q;
         q.push({src, 0});
         unordered_set<int> st = {src};
-        
+        unordered_set<int> visitedRoutes;
+
         while (!q.empty()) {
             int busStop = q.front().first;
             int busNumber = q.front().second;
@@ -24,17 +25,19 @@ public:
             
             // Iterating over the routes passing through the current bus stop
             for (auto x : mp[busStop]) {
-                // Iterating over the bus stops in the current route
-                for (auto y : routes[x]) {
-                    if (st.find(y) == st.end()) {
-                        st.insert(y);
-                        q.push({y, busNumber + 1});
+                // Check if the route has been visited
+                if (visitedRoutes.find(x) == visitedRoutes.end()) {
+                    visitedRoutes.insert(x);
+                    // Iterating over the bus stops in the current route
+                    for (auto y : routes[x]) {
+                        if (st.find(y) == st.end()) {
+                            st.insert(y);
+                            q.push({y, busNumber + 1});
+                        }
                     }
                 }
-                routes[x].clear();  // Marking the route as visited by clearing it
             }
         }
-        
         return -1;  // Destination not reachable
     }
 };
