@@ -1,9 +1,8 @@
-class Solution {
-public:
-    class DSU
+class DSU
 {
 private:
-    vector<int>parent , rank , size;
+    vector<int> parent, rank, size;
+
 public:
     DSU(int n)
     {
@@ -15,18 +14,19 @@ public:
             parent[i] = i;
         }
     }
- 
+
     int find(int v)
     {
-        if (v == parent[v])return v;
+        if (v == parent[v])
+            return v;
         return parent[v] = find(parent[v]);
     }
- 
-    void UnionBySize(int u , int v )
+
+    void UnionBySize(int u, int v)
     {
         u = find(u);
         v = find(v);
- 
+
         if (u != v)
         {
             if (size[u] < size[v])
@@ -37,11 +37,12 @@ public:
             size[u] += size[v];
         }
     }
-    void UnionByRank(int u , int v )
+
+    void UnionByRank(int u, int v)
     {
         u = find(u);
         v = find(v);
- 
+
         if (u != v)
         {
             if (rank[u] < rank[v])
@@ -57,28 +58,32 @@ public:
     }
 };
 
-    int makeConnected(int n, vector<vector<int>>& connections) {
+class Solution
+{
+public:
+    int makeConnected(int n, vector<vector<int>> &connections)
+    {
         DSU ds(n);
-        int extra = 0 ;
-        int component =  0;
-        for(auto x : connections)
+        int component = 0;
+        int extra = 0;
+        for (auto x : connections)
         {
-            int u = x[0];
-            int v = x[1];
-            if(ds.find(u)!=ds.find(v))
+            if (ds.find(x[0]) != ds.find(x[1]))
             {
-                ds.UnionByRank(u,v);
+                ds.UnionByRank(x[0], x[1]);  // Fix: Correct the index to x[1]
             }
             else
             {
                 extra++;
             }
         }
-        for(int i = 0; i < n ; i++)
+        for (int i = 0; i < n; i++)
         {
-            if(ds.find(i)==i)component++;
+            if (ds.find(i) == i)
+                component++;
         }
-        if(extra>=component-1)return component-1;
+        if (extra >= component - 1)
+            return component - 1;
         return -1;
     }
 };
