@@ -1,27 +1,34 @@
 class Solution {
 public:
-  vector<bool> checkArithmeticSubarrays(vector<int> &nums, vector<int> &l, vector<int> &r) {
-    std::vector<bool> res;
-
-    for (int i = 0; i < r.size(); i++) {
-      std::vector<int> arr(nums.begin() + l[i], nums.begin() + 1 + r[i]);
-      sort(arr.begin(), arr.end());
-      
-      if(arr.size() == 1) { // Size should be at least two 
-        res.push_back(false);
-        continue;
-      }
-
-      int diff = arr[1] - arr[0];
-      bool valid =  true;
-
-      for (int j = 2; j < arr.size(); j++)
-        if (arr[j] - arr[j - 1] != diff) {
-          valid = false;
-          break;
+    vector<bool> checkArithmeticSubarrays(vector<int>& v, vector<int>& l, vector<int>& r) {
+        vector<bool> ans;
+        for(int i = 0; i < l.size(); i++) {
+            if(abs(l[i] - r[i]) > 1) {
+                int start = l[i];
+                int last = r[i]+1;
+                vector<int> temp(v.begin() + start, v.begin() + last);
+                sort(begin(temp), end(temp));
+                int diff = temp[1] - temp[0];
+                int f = 0;
+                // for(auto x : temp)cout<<x<<" ";
+                // cout<<endl;
+                for(int j = 1; j < temp.size(); j++) {
+                    if(temp[j] - temp[j-1] != diff) {  // Fix: Change temp[i] to temp[j]
+                        f = 1;
+                        break;
+                    }
+                }
+                if(f == 0) {
+                    ans.push_back(true);
+                } else {
+                    ans.push_back(false);
+                }
+            }
+            else
+            {
+                ans.push_back(true);
+            }
         }
-      res.push_back(valid);
+        return ans;
     }
-    return res;
-  }
 };
