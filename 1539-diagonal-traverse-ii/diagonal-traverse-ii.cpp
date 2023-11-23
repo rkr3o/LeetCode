@@ -4,7 +4,7 @@ public:
     {
         if(nums.empty()) return {};
         vector<int> ans;
-        map<int, vector<int>> mp;
+        unordered_map<int, vector<int>> mp;
         
         for(int i = 0; i < nums.size(); i++)
         {
@@ -13,12 +13,17 @@ public:
                 mp[i + j].push_back(nums[i][j]);
             }
         }
-        
-        for(auto x : mp)
+        int i = 0 ;
+        while(mp.find(i)!=mp.end())
         {
-            vector<int> p = x.second;
+            vector<int>p;
+            for(auto x : mp[i])
+            {
+                p.push_back(x);
+            }
+            i++;
             reverse(p.begin(), p.end());
-            ans.insert(ans.end(), p.begin(), p.end()); 
+            ans.insert(ans.end(), p.begin(), p.end());
         }
         return ans;
     }
