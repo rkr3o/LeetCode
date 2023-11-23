@@ -5,25 +5,20 @@ public:
         if(nums.empty()) return {};
         vector<int> ans;
         unordered_map<int, vector<int>> mp;
-        
-        for(int i = 0; i < nums.size(); i++)
-        {
-            for(int j = 0; j < nums[i].size(); j++)
-            {
-                mp[i + j].push_back(nums[i][j]);
+        for(int row = nums.size()-1; row >= 0; row--) {
+            for(int col = 0; col < nums[row].size(); col++) 
+            {    
+                mp[row+col].push_back(nums[row][col]);   
             }
         }
-        int i = 0 ;
-        while(mp.find(i)!=mp.end())
-        {
-            vector<int>p;
-            for(auto x : mp[i])
+        int diagonal = 0;
+        while(mp.find(diagonal) != mp.end()) 
+        {    
+            for(int &num : mp[diagonal]) 
             {
-                p.push_back(x);
+                ans.push_back(num);
             }
-            i++;
-            reverse(p.begin(), p.end());
-            ans.insert(ans.end(), p.begin(), p.end());
+            diagonal++;
         }
         return ans;
     }
