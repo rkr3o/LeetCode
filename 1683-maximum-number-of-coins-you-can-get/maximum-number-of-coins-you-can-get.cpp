@@ -1,6 +1,7 @@
 class Solution {
 public:
-    int maxCoins(vector<int>& piles) {
+    int maxCoins(vector<int>& piles) 
+    {
         sort(piles.begin(),piles.end());
         int size = piles.size()/3;
         int val = 0 ;
