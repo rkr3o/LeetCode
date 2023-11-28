@@ -48,16 +48,14 @@ public:
         int n = nums.size();
         DSU ds(maxNum);
 
-        // Prime factorization using Sieve of Eratosthenes
-        vector<vector<int>> factors(maxNum + 1);
-        sieve(maxNum, factors);
-
-        for (int i = 0; i < n; i++) {
-            for (int factor : factors[nums[i]]) {
-                ds.unionByRank(nums[i], factor);
+        for(int i=0;i<nums.size();i++){
+            for(int j=2;j<=sqrt(nums[i]);j++){
+                if(nums[i]%j==0){
+                    ds.unionByRank(nums[i],j);
+                    ds.unionByRank(nums[i],nums[i]/j);
+                }
             }
         }
-
         unordered_map<int, int> mp;
         for (auto& x : nums) {
             mp[ds.find(x)]++;
