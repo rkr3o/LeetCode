@@ -11,29 +11,19 @@
  */
 class Solution {
 public:
+    void solve(TreeNode* root , vector<int>&ans)
+    {
+        if(root==NULL)return;
+
+        solve(root->left,ans);
+        //root
+         ans.push_back(root->val);
+       // cout<<root->val<<endl;
+        solve(root->right,ans);
+    }
     vector<int> inorderTraversal(TreeNode* root) {
-         vector<int>ans ;
-         stack<TreeNode*>st;
-         TreeNode* node = root;
-        
-            while(true)
-            {
-                if(node!=NULL)
-                {
-                st.push(node);
-                node=node->left;
-                }
-                else
-                {
-                    if(st.empty()==true)break;
-                    {
-                        node = st.top();
-                        st.pop();  
-                        ans.push_back(node->val);
-                        node=node->right;      
-                    }
-                }
-            }
-            return ans;
+        vector<int>ans;
+        solve(root,ans);
+        return ans;
     }
 };
