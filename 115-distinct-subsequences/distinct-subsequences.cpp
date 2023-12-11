@@ -9,11 +9,11 @@ public:
         int ways = 0 ;
         if(s[i]==t[j])
         {
-             dp[i][j] = ways+=solve(i-1,j-1,s,t)+solve(i-1,j,s,t);
+            ways+=solve(i-1,j-1,s,t)+solve(i-1,j,s,t);
         }
         else
         {
-             dp[i][j] = ways=max(ways,solve(i-1,j,s,t));
+            ways+=solve(i-1,j,s,t);
         }
         return dp[i][j] = ways;
     }
