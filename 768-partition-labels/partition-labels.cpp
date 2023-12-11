@@ -9,7 +9,7 @@ public:
           ind[s[i]-'a']=i;
       } 
       int maxima = 0 ;
-      cout<<ind[0]<<endl;
+      //cout<<ind[0]<<endl;
       int prev = 0 ;
       int sum = 0 ;
       for(int i = 0 ; i < n ; i++)
