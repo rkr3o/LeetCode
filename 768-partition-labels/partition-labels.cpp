@@ -14,13 +14,17 @@ public:
       int sum = 0 ;
       for(int i = 0 ; i < n ; i++)
       {
+          //find maximum index of element
           maxima = max(maxima,ind[s[i]-'a']);
-          if(i==maxima){
-              if(ans.empty()){
+          if(i==maxima)
+          {
+              if(ans.empty())
+              {
                   ans.push_back(i+1);
                   prev=i;
               }
-              else {
+              else 
+              {
                   ans.push_back(i-prev);
                   prev=i;
               }
