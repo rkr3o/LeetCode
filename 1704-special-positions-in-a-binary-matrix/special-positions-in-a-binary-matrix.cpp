@@ -9,29 +9,22 @@ public:
         int m = grid[0].size();
         int cnt = 0;
 
+        vector<int> rowSum(n, 0);
+        vector<int> colSum(m, 0);
+
+        // Calculate row and column sums
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                if (grid[i][j] == 1) {
-                    // Check the row
-                    bool hasOtherOneInRow = false;
-                    for (int col = 0; col < m; col++) {
-                        if (col != j && grid[i][col] == 1) {
-                            hasOtherOneInRow = true;
-                            break;
-                        }
-                    }
-                    // Check the column
-                    bool hasOtherOneInCol = false;
-                    for (int row = 0; row < n; row++) {
-                        if (row != i && grid[row][j] == 1) {
-                            hasOtherOneInCol = true;
-                            break;
-                        }
-                    }
-                    // If there is no other '1' in the row and column, increment count
-                    if (!hasOtherOneInRow && !hasOtherOneInCol) {
-                        cnt++;
-                    }
+                rowSum[i] += grid[i][j];
+                colSum[j] += grid[i][j];
+            }
+        }
+
+        // Check for special elements
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == 1 && rowSum[i] == 1 && colSum[j] == 1) {
+                    cnt++;
                 }
             }
         }
