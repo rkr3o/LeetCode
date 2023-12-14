@@ -1,33 +1,35 @@
- class Solution {
+class Solution {
 public:
-
-    bool checkPalindrome(string &s) {
-        int l = 0;
-        int h = s.size() - 1;
-
-        while (l <= h) {
-            if (s[l++] != s[h--]) return false;
+    string longestPalindrome(string s) {
+        int n =s.size();
+        if(n==0)return "";
+        vector<vector<bool>>dp(n,vector<bool>(n,false));
+ 
+       //every single character is palindrome
+        for(int i = 0 ; i < n ; i++)
+        {
+            dp[i][i]=true;
         }
-        return true;
-    }
- void solve(int ind, string &s, string &ans) {
-        if (ind >= s.size()) return;
-        int n = s.size();
-        string temp;
-        for (int i = ind; i < n; i++) {
-            temp.push_back(s[i]);
-            if (checkPalindrome(temp) == true) {
-                if (temp.size() > ans.size()) {
-                    ans = temp;
+        string ans="";
+        ans+=s[0];
+        for(int i = n-1 ; i>=0 ; i--)
+        {
+            for(int j = i+1 ; j < n ; j++)
+            {
+                if(s[i]==s[j])
+                {
+                    if(j-i==1 || dp[i+1][j-1])
+                    {
+                        dp[i][j]=true;
+                        if(ans.size() < j-i+1)
+                        {
+                            ans=s.substr(i,j-i+1);
+                        }
+                    }
                 }
             }
         }
-        solve(ind + 1, s, ans);  // Move to the next index and continue the search
-    }
 
-    string longestPalindrome(string s) {
-        string ans;
-        solve(0, s, ans);
         return ans;
     }
 };
