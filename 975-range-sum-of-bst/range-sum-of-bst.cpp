@@ -15,10 +15,18 @@ public:
     {
         if(root==NULL)return 0 ;
         int sum = 0 ;
-        int left = solve(root->left,low,high);
-        int right = solve(root->right,low,high);
-        if(root->val>=low and root->val<=high)sum+=root->val;
-        return sum+left+right;
+        if(root->val >=low and root->val<=high)
+        {
+            return root->val+solve(root->left,low,high)+solve(root->right,low,high);
+        }
+        else if(root->val<low)
+        {
+            return solve(root->right,low,high);
+        }
+        else
+        {
+            return solve(root->left,low,high);
+        }
     }
     int rangeSumBST(TreeNode* root, int low, int high) {
         if(root==NULL)return 0 ;
