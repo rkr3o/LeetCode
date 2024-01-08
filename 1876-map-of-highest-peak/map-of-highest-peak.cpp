@@ -4,7 +4,7 @@ public:
         int n = isWater.size();
         int m = isWater[0].size();
 
-        vector<vector<int>> grid(n, vector<int>(m, -1));
+        vector<vector<int>> grid(n, vector<int>(m, INT_MAX));
         queue<pair<int, int>> q;
 
         for (int i = 0; i < n; i++) {
@@ -28,7 +28,7 @@ public:
                 int nrow = row + drow[i];
                 int ncol = col + dcol[i];
 
-                if (nrow >= 0 && ncol >= 0 && nrow < n && ncol < m && grid[nrow][ncol] == -1) {
+                if (nrow >= 0 && ncol >= 0 && nrow < n && ncol < m && grid[nrow][ncol] > 1+grid[row][col]) {
                     grid[nrow][ncol] = grid[row][col] + 1;
                     q.push({nrow, ncol});
                 }
