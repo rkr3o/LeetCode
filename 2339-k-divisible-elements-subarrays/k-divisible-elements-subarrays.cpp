@@ -6,14 +6,15 @@ public:
         for(int i = 0 ; i < n ; i++)
         {
             vector<int>temp;
-            int cnt = 0 ;
+            int cnt = 0;
             for(int j = i ; j < n ; j++)
             {
-               temp.push_back(nums[j]);
-               if(nums[j]%p==0)cnt++;
-               if(cnt>k)break;
-               st.insert(temp);
+                temp.push_back(nums[j]);
+                if(nums[j]%p==0)cnt++;
+                if(cnt>k)break;
+                  st.insert(temp);
             }
+          
         }
         return st.size();
     }
