@@ -1,6 +1,6 @@
 class DataStream {
 public:
-    int cnt = 1;
+    int cnt = 0;
     int target , k;
     DataStream(int _value, int _k) {
         target=_value;
@@ -8,21 +8,16 @@ public:
     }
     
     bool consec(int num) {
-        if(num==target and cnt>=k)
+        if(num==target)
         {
             cnt++;
-            return true;
         }
-        else if(num==target and cnt < k)
+        else
         {
-            cnt++;
-            return false;
+            cnt=0;
+           
         }
-        else{
-            cnt=1;
-            return false;
-        }
-        return false;
+        return cnt>=k;
     }
 };
 
