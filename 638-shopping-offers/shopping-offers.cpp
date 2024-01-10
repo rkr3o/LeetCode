@@ -11,9 +11,7 @@ int minCost(vector<int>& price, vector<vector<int>>& special, vector<int>& needs
         if (dp.count(needs)) {
             return dp[needs];
         }
-
         int regularCost = calculateRegularCost(price, needs);
-
         for (auto& offer : special) {
             vector<int> updatedNeeds(needs.begin(), needs.end());
             bool validOffer = true;
