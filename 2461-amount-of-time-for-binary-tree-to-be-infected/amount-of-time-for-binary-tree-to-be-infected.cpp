@@ -29,39 +29,31 @@ public:
         unordered_map<TreeNode*,TreeNode*>parent;
         TreeNode* startNode = NULL;
         mapParent(parent,root,start,startNode);
-        queue<TreeNode*>q;
+        queue<pair<TreeNode*,int>>q;
         unordered_map<TreeNode*,bool>vis;
-        q.push(startNode);
+        q.push({startNode,0});
         vis[startNode]=true;
         int time = 0 ;
         while(!q.empty())
-        {
-            int n = q.size();
-            bool f = 0 ;
-            for(int i = 0 ; i < n ; i++)
+        { 
+            TreeNode* node = q.front().first;
+            int t = q.front().second;
+            time = max(time,t);
+            q.pop();
+            if(node->left!=NULL and !vis[node->left])
             {
-                TreeNode* node = q.front();
-                q.pop();
-                if(node->left!=NULL and !vis[node->left])
-                {
-                    f=1;
-                    q.push(node->left);
-                    vis[node->left]=true;
-                }
-                if(node->right!=NULL and !vis[node->right])
-                {
-                    f=1;
-                    q.push(node->right);
-                    vis[node->right]=true;
-                }
-                if(parent[node] and !vis[parent[node]]){
-                    f=1;
-                    q.push(parent[node]);
-                    vis[parent[node]]=true;
-                }
+                q.push({node->left,t+1});
+                vis[node->left]=true;
             }
-            if(f)
-                time++;
+            if(node->right!=NULL and !vis[node->right])
+            {
+                q.push({node->right,t+1});
+                vis[node->right]=true;
+            }
+            if(parent[node] and !vis[parent[node]]){
+                q.push({parent[node],t+1});
+                vis[parent[node]]=true;
+            }
         }
         return time;
     }
