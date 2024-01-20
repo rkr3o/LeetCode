@@ -4,9 +4,11 @@ public:
         int cnt = 0 ;
         int n = tasks.size();
         unordered_map<int,int>mp;
-        for(auto x : tasks) mp[x]++;
+        for(auto x : tasks) 
+            mp[x]++;
         bool k = 0 ;
-        for(auto &x : mp) {
+        for(auto &x : mp) 
+        {
              if(x.second==1)
              {
                  k=true;
