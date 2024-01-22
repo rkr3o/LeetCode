@@ -1,25 +1,25 @@
 class Solution {
 public:
     vector<int> findErrorNums(vector<int>& nums) {
-        map<int,int>mp;
-        int miss = -1;
-        int n = nums.size();
-        int dup=-1;
-        for(auto x : nums)
-        {
-            mp[x]++;
-            if(mp[x]>1)
-                dup = x;
-        }
-        int cnt = 1 ;
-        for(auto x : mp)
-        {
-            if(x.first==cnt)cnt++;
-            else {
-                miss = cnt;
+ int n = nums.size();
+        vector<int> result(2, -1); // Initialize with -1
+        for (int i = 0; i < n; ++i) {
+            int index = abs(nums[i]) - 1;
+
+            if (nums[index] < 0) {
+                result[0] = abs(nums[i]); // Duplicate found
+            } else {
+                nums[index] *= -1;
             }
         }
-        if(miss==-1)miss=n;
-        return {dup,miss};
+
+        for (int i = 0; i < n; ++i) {
+            if (nums[i] > 0) {
+                result[1] = i + 1; // Missing number found
+                break;
+            }
+        }
+
+        return result;
     }
 };
