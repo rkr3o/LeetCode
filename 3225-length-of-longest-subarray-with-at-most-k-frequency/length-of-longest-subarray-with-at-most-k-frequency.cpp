@@ -10,9 +10,9 @@ public:
             mp[nums[right]]++;
             while(mp[nums[right]]>k)
             {
-                mp[nums[left]]--;
-                left++;
-                if(mp[nums[left]]==0)mp.erase(mp[nums[left]]);
+                mp[nums[left++]]--;
+                if(mp[nums[left]]==0)
+                    mp.erase(mp[nums[left]]);
             }
             maxima = max(maxima,right-left+1);
         }
