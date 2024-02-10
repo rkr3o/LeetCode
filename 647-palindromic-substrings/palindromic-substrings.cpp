@@ -1,24 +1,29 @@
 class Solution {
 public:
-    bool checkPalindrome(string &s)
-    {
-        string t = s;
-        reverse(begin(t),end(t));
-        return s==t;
-    }
     int countSubstrings(string s) {
-        int cnt = 0 ;
         int n = s.size();
-        for(int i = 0 ; i < (int)s.size() ; i++)
+        vector<vector<bool>>dp(n,vector<bool>(n,false));
+        int cnt = 0;
+        for(int l = 1 ; l <= n ; l++)
         {
-            string temp="";
-            for(int j = i ; j < n ; j++)
+            for(int i = 0 ; i+l-1 < n; i++)
             {
-                temp+=s[j];
-                if(checkPalindrome(temp))cnt++;
+                int j = i+l-1;
+                if(i==j){
+                    dp[i][i]=true;
+                }
+                else if(i+1==j)
+                {
+                    dp[i][j]=(s[i]==s[j]);
+                }
+                else{
+                    dp[i][j]=(s[i]==s[j] and dp[i+1][j-1]);
+                }
+
+                if(dp[i][j]==true)
+                    cnt++;
             }
         }
-
         return cnt;
     }
 };
