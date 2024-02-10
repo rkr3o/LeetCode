@@ -1,22 +1,24 @@
 class Solution {
 public:
+    bool checkPalindrome(string &s)
+    {
+        string t = s;
+        reverse(begin(t),end(t));
+        return s==t;
+    }
     int countSubstrings(string s) {
+        int cnt = 0 ;
         int n = s.size();
-        //dp[i] = whether the substring ending at index i is a palindrome or not.
-
-        int count = 0;
-        vector<int> dp(n, 0);
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j <= i; j++) {
-                if (s[i] == s[j] && (i - j < 2 || dp[j + 1])) {
-                    dp[j] = 1;
-                    count++;
-                } else {
-                    dp[j] = 0;
-                }
+        for(int i = 0 ; i < (int)s.size() ; i++)
+        {
+            string temp="";
+            for(int j = i ; j < n ; j++)
+            {
+                temp+=s[j];
+                if(checkPalindrome(temp))cnt++;
             }
         }
 
-        return count;
+        return cnt;
     }
 };
