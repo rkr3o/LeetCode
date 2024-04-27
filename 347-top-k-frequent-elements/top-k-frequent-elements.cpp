@@ -4,7 +4,8 @@ public:
         unordered_map<int,int>mp;
         for(auto &x:nums)mp[x]++;
         priority_queue< pair<int,int> , vector<pair<int,int>> ,greater<pair<int,int>>>pq;
-
+        vector<int>ans;
+        
         for(auto &[x,y]:mp)
         {
             pq.push({y,x});
@@ -13,10 +14,7 @@ public:
                 pq.pop();
             }
         }
-
-        vector<int>ans;
-        while(!pq.empty())
-        {
+        while(!pq.empty()){
             ans.push_back(pq.top().second);
             pq.pop();
         }
