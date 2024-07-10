@@ -1,7 +1,7 @@
 class Solution {
 public:
     vector<string> subdomainVisits(vector<string>& cpdomains) {
-        map<string, int> domainCount;
+        unordered_map<string, int> domainCount;
         
         for (const auto& cpdomain : cpdomains) {
             int spaceIndex = cpdomain.find(' ');
