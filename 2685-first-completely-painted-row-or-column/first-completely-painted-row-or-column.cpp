@@ -5,15 +5,15 @@ public:
         int m = mat[0].size();  
         int x = arr.size();
 
-        map<int, pair<int, int>> mp;
+        unordered_map<int, pair<int, int>> mp;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 mp[mat[i][j]] = {i, j};
             }
         }
 
-        vector<int> row(n, m);
-        vector<int> col(m, n);
+        vector<int> row(n, m); 
+        vector<int> col(m, n);  
 
         for (int i = 0; i < arr.size(); i++) {
             int num = arr[i];
