@@ -14,8 +14,8 @@ public:
             else sum2 += x;
         }
 
-        long long min1 = sum1 + z1 * 1;
-        long long min2 = sum2 + z2 * 1;
+        long long min1 = sum1 + z1 ;
+        long long min2 = sum2 + z2 ;
 
         if (z1 == 0 && min2 > sum1) return -1;
         if (z2 == 0 && min1 > sum2) return -1;
